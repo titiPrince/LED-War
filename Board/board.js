@@ -48,7 +48,7 @@ class Board {
     }
 
     clear() {
-        this.leds.forEach(led => led.setColor(new Color(200, 200, 200)));
+        this.setAllLed(new Color(0, 0, 0));
     }
 }
 
