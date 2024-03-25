@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Led War board</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="board.js"></script>
+    </head>
+    <body>
+        <div id="board">
+        </div>
+
+        <script>
+            window.addEventListener('load', function() {
+                var board = new Board(document.getElementById('board'), 50, 50);
+                board.init();
+
+                console.log(board.leds)
+
+                function randLed() {
+                    board.clear();
+                    let x = Math.floor(Math.random() * 50);
+                    let color = new Color(
+                        Math.floor(Math.random() * 255),
+                        Math.floor(Math.random() * 255),
+                        Math.floor(Math.random() * 255)
+                    );
+
+                    // board.setLed(x, y, color);
+
+                    board.setLineX(x, color);
+
+                    setTimeout(randLed, 100);
+                }
+
+                setTimeout(randLed, 100);
+            });
+        </script>
+    </body>
+</html>
