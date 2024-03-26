@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Led War board</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="../Board/board.js"></script>
+    <script src="../Board/screen.js"></script>
     <script src="player.js"></script>
 
     <script src="../playersScripts/script1.js"></script>
@@ -20,7 +20,7 @@
       let c = 0;
 
       window.addEventListener("load", function () {
-        const board = new Board(document.getElementById("board"), 50, 50);
+        const board = new Screen(document.getElementById("board"), 50, 50);
         board.init();
 
         console.log(board.leds);

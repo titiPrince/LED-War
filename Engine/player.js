@@ -8,16 +8,16 @@ class Player {
   }
   moveRight() {
     // console.log("want move right");
-    this.y++;
+    this.x++;
   }
   moveLeft() {
     // console.log("want move right");
-    this.y--;
-  }
-  moveUp() {
     this.x--;
   }
+  moveUp() {
+    this.y++;
+  }
   moveBottom() {
-    this.x++;
+    this.y--;
   }
 }

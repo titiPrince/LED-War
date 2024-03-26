@@ -1,4 +1,4 @@
-class Board {
+class Screen {
   width = 0;
   height = 0;
   leds = [];
@@ -13,12 +13,13 @@ class Board {
   }
 
   init() {
-    for (let y = 0; y < this.width; y++) {
+    for (let x = 0; x < this.width; x++) {
       let line = document.createElement("div");
       line.classList.add("line");
 
-      for (let x = 0; x < this.height; x++) {
-        let led = new Led(line, y, x, new Color(0, 0, 0));
+      for (let y = 0; y < this.height; y++) {
+
+        let led = new Led(line, x, y, new Color(0, 0, 0));
         this.leds.push(led);
       }
 
@@ -26,9 +27,16 @@ class Board {
     }
   }
 
+  limitX(x) {
+    return Math.min(this.width - 1, Math.max(0, x));
+  }
+
+  limitY(y) {
+    return Math.min(this.height - 1, Math.max(0, y));
+  }
+
   setLed(x, y, color) {
-    console.log("setLed", x, y, color);
-    let led = this.leds[y * this.width + x];
+    let led = this.leds[this.limitX(x) * this.height + this.limitY(this.height - y)];
     led.setColor(color);
   }
 
