@@ -38,13 +38,13 @@ class Board {
 
   setLineY(y, color) {
     for (let x = 0; x < this.width; x++) {
-      this.setLed(x, y, color);
+      this.setLed(x, this.limitY(y), color);
     }
   }
 
   setLineX(x, color) {
     for (let y = 0; y < this.height; y++) {
-      this.setLed(x, y, color);
+      this.setLed(this.limitX(x), y, color);
     }
   }
 
@@ -74,7 +74,7 @@ class Led {
 
   setColor(color) {
     this.color = color;
-    this.element.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+    this.element.style.backgroundColor = this.color.toString();
   }
 
   delete() {
@@ -82,28 +82,24 @@ class Led {
   }
 }
 
-class Vector3D {
-  x = 0;
-  y = 0;
-  z = 0;
+class Color {
+  r;
+  g;
+  b;
+  a;
 
-  constructor(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-  }
-}
-
-class Color extends Vector3D {
   limit(value) {
     return Math.min(255, Math.max(0, value));
   }
 
-  constructor(r, g, b) {
-    super(r, g, b);
-
+  constructor(r, g, b, a = 1.0) {
     this.r = this.limit(r);
     this.g = this.limit(g);
     this.b = this.limit(b);
+    this.a = a;
+  }
+
+  toString() {
+    return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
   }
 }
