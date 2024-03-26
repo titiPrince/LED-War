@@ -1,15 +1,11 @@
-class Screen {
-  width = 0;
-  height = 0;
-  leds = [];
+class Screen extends Grid {
 
   container;
 
   constructor(container, width, height) {
+    super(width, height);
+
     this.container = container;
-    this.width = width;
-    this.height = height;
-    this.leds = [];
   }
 
   init() {
@@ -18,30 +14,24 @@ class Screen {
       line.classList.add("line");
 
       for (let y = 0; y < this.height; y++) {
-
-        let led = new Led(line, x, y, new Color(0, 0, 0));
-        this.leds.push(led);
+        this.set(
+            x,
+            y,
+            new Led(line, x, y, new Color(0, 0, 0))
+        );
       }
 
       this.container.appendChild(line);
     }
   }
 
-  limitX(x) {
-    return Math.min(this.width - 1, Math.max(0, x));
-  }
-
-  limitY(y) {
-    return Math.min(this.height - 1, Math.max(0, y));
-  }
-
   setLed(x, y, color) {
-    let led = this.leds[this.limitX(x) * this.height + this.limitY(this.height - y)];
+    let led = this.get(x, y);
     led.setColor(color);
   }
 
   setAllLed(color) {
-    this.leds.forEach((led) => led.setColor(color));
+    this.tiles.forEach((led) => led.setColor(color));
   }
 
   setLineY(y, color) {

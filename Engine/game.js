@@ -1,10 +1,11 @@
 class Game {
   players;
+  screen;
   board;
 
   constructor() {
     this.players = [];
-    this.board = new Screen(document.getElementById("board"), 32, 19);
+    this.screen = new Screen(document.getElementById("board"), 32, 19);
   }
 
   initGame() {
@@ -15,26 +16,26 @@ class Game {
 
   initPlayers() {
     let player1 = new Player(
-      Math.round(Math.random() * this.board.width),
-      Math.round(Math.random() * this.board.height),
+      Math.round(Math.random() * this.screen.width),
+      Math.round(Math.random() * this.screen.height),
       new Color(255, 0, 0)
     );
 
     let player2 = new Player(
-      Math.round(Math.random() * this.board.width),
-      Math.round(Math.random() * this.board.height),
+      Math.round(Math.random() * this.screen.width),
+      Math.round(Math.random() * this.screen.height),
       new Color(255, 255, 0)
     );
 
     this.addPlayer(player1);
     this.addPlayer(player2);
 
-    this.board.setLed(player1.x, player1.y, player1.color);
-    this.board.setLed(player2.x, player2.y, player2.color);
+    this.screen.setLed(player1.x, player1.y, player1.color);
+    this.screen.setLed(player2.x, player2.y, player2.color);
   }
 
   boardInit() {
-    this.board.init();
+    this.screen.init();
   }
 
   loop(turn) {
@@ -54,7 +55,7 @@ class Game {
           // }
           // this.board.setLed(player.x, player.y, player.color);
 
-          let instructionPlayer1 = pattern1(this.board, i);
+          let instructionPlayer1 = pattern1(this.screen, i);
           // let instructionPlayer2 = pattern2(this.board, i);
           // console.log(instructionPlayer1);
 
@@ -62,7 +63,7 @@ class Game {
           // this.executeInstruction(player, instructionPlayer2);
           // player.moveBottom();
 
-          this.board.setLed(player.x, player.y, player.color);
+          this.screen.setLed(player.x, player.y, player.color);
         }, i * 200);
       }
     }
@@ -73,7 +74,7 @@ class Game {
   }
 
   displayColor(player) {
-    this.board.setLed(player.x, player.y, player.color);
+    this.screen.setLed(player.x, player.y, player.color);
   }
 
   executeInstruction(player, instruction) {
