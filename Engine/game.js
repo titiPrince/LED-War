@@ -1,17 +1,25 @@
 class Game {
+  static WIDTH = 20;
+  static HEIGHT = 20;
+  static REFRESH_RATE = 50;
+
   players;
   screen;
   board;
 
   constructor() {
     this.players = [];
-    this.screen = new Screen(document.getElementById("board"), 32, 19);
+    this.screen = new Screen(document.getElementById("board"), Game.WIDTH, Game.HEIGHT);
+    this.board = new Board(Game.WIDTH, Game.HEIGHT);
   }
 
   initGame() {
-    this.boardInit();
+    this.screen.init();
+    this.board.init();
+
     this.initPlayers();
-    this.loop(50);
+
+    this.loop(100);
   }
 
   initPlayers() {
@@ -29,48 +37,37 @@ class Game {
 
     this.addPlayer(player1);
     this.addPlayer(player2);
-
-    this.screen.setLed(player1.x, player1.y, player1.color);
-    this.screen.setLed(player2.x, player2.y, player2.color);
   }
 
-  boardInit() {
-    this.screen.init();
+  refreshScreen() {
+    this.board.forEach((tile) => {
+      this.screen.setLed(tile.x, tile.y, tile.color);
+    });
   }
 
   loop(turn) {
     for (let i = 0; i < turn; i++) {
       for (const player of this.players) {
         setTimeout(() => {
-          // player.moveUp();
-          // this.board.setLed(player.x, player.y, player.color);
-          // console.log(pattern1(this.board, i))
-          // console.log(player)
-          // this.board.setLed(player.x, player.y, new Color(0, 0, 255));
-          // if (pattern1(this.board, i) === "UP") {
-          //   player.moveUp();
-          // }
-          // else if (pattern1(this.board, i) === "RIGHT") {
-          //   player.moveRight();
-          // }
-          // this.board.setLed(player.x, player.y, player.color);
+          // Replace the player tile by the player's drag tile.
+          this.board.set(player.x, player.y, new PlayerDrag(player.x, player.y, player));
 
-          let instructionPlayer1 = pattern1(this.screen, i);
-          // let instructionPlayer2 = pattern2(this.board, i);
-          // console.log(instructionPlayer1);
-
+          // Execute the player's instructions.
+          let instructionPlayer1 = pattern1(this.board, i);
           this.executeInstruction(player, instructionPlayer1);
-          // this.executeInstruction(player, instructionPlayer2);
-          // player.moveBottom();
 
-          this.screen.setLed(player.x, player.y, player.color);
-        }, i * 200);
+          // Add the player to the board.
+          this.board.set(player.x, player.y, player);
+
+          this.refreshScreen();
+        }, i * Game.REFRESH_RATE);
       }
     }
   }
 
   addPlayer(player) {
     this.players.push(player);
+    this.board.set(player.x, player.y, player);
   }
 
   displayColor(player) {
@@ -78,21 +75,18 @@ class Game {
   }
 
   executeInstruction(player, instruction) {
-    if (instruction === "UP") {
-      player.moveUp();
-      // this.board.setLed(player.x, player.y, player.color);
-    }
-    else if (instruction === "BOTTOM") {
-      player.moveBottom();
-      // this.board.setLed(player.x, player.y, player.color);
-    }
-    else if (instruction === "LEFT") {
-      player.moveLeft();
-      // this.board.setLed(player.x, player.y, player.color);
-    }
-    else if (instruction === "RIGHT") {
-      player.moveRight();
-      // this.board.setLed(player.x, player.y, player.color);
+    switch (instruction) {
+      case "UP": player.moveUp();
+        break;
+
+      case "BOTTOM": player.moveDown();
+        break;
+
+      case "LEFT": player.moveLeft();
+        break;
+
+      case "RIGHT": player.moveRight();
+        break;
     }
   }
 }

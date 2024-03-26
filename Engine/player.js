@@ -1,23 +1,21 @@
-class Player {
-  x = 0;
-  y = 0;
+class Player extends Element {
   constructor(x, y, color) {
-    this.x = x;
-    this.y = y;
-    this.color = color;
+    super(x, y, color);
   }
+
   moveRight() {
-    // console.log("want move right");
     this.x++;
   }
+
   moveLeft() {
-    // console.log("want move right");
     this.x--;
   }
+
   moveUp() {
     this.y++;
   }
-  moveBottom() {
+
+  moveDown() {
     this.y--;
   }
 }

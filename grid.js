@@ -1,7 +1,7 @@
 class Grid {
     width = 0;
     height = 0;
-    tiles = [];
+    elements = [];
 
     constructor(width, height) {
         this.width = width;
@@ -9,7 +9,7 @@ class Grid {
 
         for (let x = 0; x < this.width; x++) {
             for (let y = 0; y < this.height; y++) {
-                this.tiles.push(null);
+                this.elements.push(new Element(x, y, new Color(0, 0, 0)));
             }
         }
     }
@@ -22,19 +22,40 @@ class Grid {
         return Math.min(this.height - 1, Math.max(0, y));
     }
 
+    coordsToIndex(x, y) {
+        return this.limitX(x) * this.height + this.limitY(y);
+    }
+
     get(x, y) {
-        return this.tiles[this.limitX(x) * this.height + this.limitY(this.height - y)];
+        // console.log("coords", x, y, this.coordsToIndex(x, y))
+        return this.elements[this.coordsToIndex(x, y)];
     }
 
     set(x, y, object) {
-        this.tiles[this.limitX(x) * this.height + this.limitY(this.height - y)] = object;
+        this.elements[this.coordsToIndex(x, y)] = object;
     }
 
     setAll(object) {
-        this.tiles.forEach((tile) => {tile = object});
+        this.elements.forEach((element) => {element = object});
+    }
+
+    forEach(callback) {
+        this.elements.forEach(callback);
     }
 
     clear() {
         this.setAll(null);
+    }
+}
+
+class Element {
+    x;
+    y;
+    color;
+
+    constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
     }
 }

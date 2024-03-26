@@ -1,5 +1,5 @@
 class Screen extends Grid {
-
+  initialized = false;
   container;
 
   constructor(container, width, height) {
@@ -23,15 +23,19 @@ class Screen extends Grid {
 
       this.container.appendChild(line);
     }
+
+    this.initialized = true;
   }
 
   setLed(x, y, color) {
+    if (!this.initialized) throw new Error("Screen not initialized. Please call init() first.");
+
     let led = this.get(x, y);
     led.setColor(color);
   }
 
   setAllLed(color) {
-    this.tiles.forEach((led) => led.setColor(color));
+    this.elements.forEach((led) => led.setColor(color));
   }
 
   setLineY(y, color) {
@@ -51,32 +55,27 @@ class Screen extends Grid {
   }
 }
 
-class Led {
-  x = 0;
-  y = 0;
-  element;
-  color;
+class Led extends Element {
+  html;
 
-  constructor(container, x, y, color) {
-    this.x = x;
-    this.y = y;
-    this.color = color;
+  constructor(parent, x, y, color) {
+    super(x, y, color);
 
-    this.element = document.createElement("div");
-    this.element.className = "led";
+    this.html = document.createElement("div");
+    this.html.className = "led";
 
-    this.element.innerHTML = `${x}, ${y}`;
+    this.html.innerHTML = `${x}, ${y} led`;
 
-    container.appendChild(this.element);
+    parent.appendChild(this.html);
   }
 
   setColor(color) {
     this.color = color;
-    this.element.style.backgroundColor = this.color.toString();
+    this.html.style.backgroundColor = this.color.toString();
   }
 
   delete() {
-    this.element.remove();
+    this.html.remove();
   }
 }
 
