@@ -6,10 +6,18 @@ class Player {
     this.y = y;
     this.color = color;
   }
-  moveRight(boardState) {
-    console.log("want move right");
+  moveRight() {
+    // console.log("want move right");
+    this.y++;
   }
-  moveLeft(boardState) {}
-  moveUp(boardState) {}
-  moveBottom(boardState) {}
+  moveLeft() {
+    // console.log("want move right");
+    this.y--;
+  }
+  moveUp() {
+    this.x--;
+  }
+  moveBottom() {
+    this.x++;
+  }
 }

@@ -10,18 +10,18 @@ class Game {
   initGame() {
     this.boardInit();
     this.initPlayers();
-    this.loop();
+    this.loop(50);
   }
 
   initPlayers() {
     let player1 = new Player(
-      Math.round(Math.random() * this.board.width),
-      Math.round(Math.random() * this.board.height),
+      Math.round(Math.random() * this.board.width - 1),
+      Math.round(Math.random() * this.board.height - 1),
       new Color(255, 0, 0)
     );
     let player2 = new Player(
-      Math.round(Math.random() * this.board.width),
-      Math.round(Math.random() * this.board.height),
+      Math.round(Math.random() * this.board.width - 1),
+      Math.round(Math.random() * this.board.height - 1),
       new Color(255, 255, 0)
     );
     this.addPlayer(player1);
@@ -33,11 +33,38 @@ class Game {
   boardInit() {
     this.board.init();
   }
-  loop() {
-    for (const player of this.players) {
+  loop(turn) {
+    for (let i = 0; i < turn; i++) {
+      for (const player of this.players) {
+        setTimeout(() => {
+          let instructionPlayer1 = pattern1(this.board, i);
+          // let instructionPlayer2 = pattern2(this.board, i);
+          // console.log(instructionPlayer1);
+          this.executeInstruction(player, instructionPlayer1);
+          // this.executeInstruction(player, instructionPlayer2);
+        }, i * 200);
+      }
     }
   }
   addPlayer(player) {
     this.players.push(player);
+  }
+  displayColor(player) {
+    this.board.setLed(player.x, player.y, player.color);
+  }
+  executeInstruction(player, instruction) {
+    if (instruction === "UP") {
+      player.moveUp(this.board);
+      this.board.setLed(player.x, player.y, player.color);
+    } else if (instruction === "BOTTOM") {
+      player.board.moveBottom(this.board);
+      this.board.setLed(player.x, player.y, player.color);
+    } else if (instruction === "LEFT") {
+      player.moveLeft(this.board);
+      this.board.setLed(player.x, player.y, player.color);
+    } else if (instruction === "RIGHT") {
+      player.moveRight(this.board);
+      this.board.setLed(player.x, player.y, player.color);
+    }
   }
 }
