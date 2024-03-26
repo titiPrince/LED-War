@@ -57,10 +57,12 @@ class Game {
           let instructionPlayer1 = pattern1(this.board, i);
           // let instructionPlayer2 = pattern2(this.board, i);
           // console.log(instructionPlayer1);
+
           this.executeInstruction(player, instructionPlayer1);
-          // player.moveBottom();
-          this.board.setLed(player.x, player.y, player.color);
           // this.executeInstruction(player, instructionPlayer2);
+          // player.moveBottom();
+
+          this.board.setLed(player.x, player.y, player.color);
         }, i * 200);
       }
     }
