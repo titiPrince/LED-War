@@ -13,43 +13,17 @@
     <script src="../playersScripts/script1.js"></script>
     <script src="../playersScripts/script2.js"></script>
     <script src="./game.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div id="board"></div>
     <script src="index.js"></script>
-    <!-- <script>
-      let y = 0;
-      let x = 0;
-      let c = 0;
-
-      window.addEventListener("load", function () {
-        const board = new Screen(document.getElementById("board"), 50, 50);
-        board.init();
-
-        console.log(board.leds);
-
-        function randLed() {
-          // board.clear();
-
-          // let x = Math.floor(Math.random() * 50);
-          // let y = Math.floor(Math.random() * 50);
-
-          let color = new Color(c, c, c);
-
-          // board.setLed(Math.floor(Math.random() * 50), Math.floor(Math.random() * 50), color);
-
-          board.setLineX(x, color);
-          board.setLineY(y, color);
-
-          setTimeout(randLed, 100);
-
-          y = (y + 1) % 50;
-          x = (x + 1) % 50;
-          c = (c + 5) % 255;
-        }
-
-        setTimeout(randLed, 100);
-      });
-    </script> -->
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+    <div>
+      <canvas id="myChart2"></canvas>
+    </div>
+    <script></script>
   </body>
 </html>

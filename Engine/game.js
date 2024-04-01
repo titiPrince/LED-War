@@ -1,12 +1,14 @@
 class Game {
   static WIDTH = 30;
   static HEIGHT = 20;
-  static REFRESH_RATE = 30;
+  static REFRESH_RATE = 15;
 
   players;
   screen;
   board;
-
+  history;
+  scorePlayer1History = [];
+  scorePlayer2History = [];
   constructor() {
     this.players = [];
     this.screen = new Screen(
@@ -15,6 +17,7 @@ class Game {
       Game.HEIGHT
     );
     this.board = new Board(Game.WIDTH, Game.HEIGHT);
+    this.history = [];
   }
 
   initGame() {
@@ -22,7 +25,7 @@ class Game {
     this.board.init();
 
     this.initPlayers();
-
+    console.log(this.board);
     this.loop(100);
   }
 
@@ -60,100 +63,185 @@ class Game {
         } else if (tile.player === this.players[1]) {
           scorePlayer2++;
         }
-      }
-      else{
+      } else {
         voidScore++;
       }
     });
 
-    console.group("Player1");
-    console.log("Score:", scorePlayer1);
-    console.groupEnd();
+    const ctx = document.getElementById("myChart");
 
-    console.group("Player2");
-    console.log("Score:", scorePlayer2);
-    console.groupEnd();
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["PLayer1", "Player2", "Void"],
+        datasets: [
+          {
+            label: "DOminance",
+            data: [scorePlayer1, scorePlayer2, voidScore],
+            borderWidth: 1,
+            backgroundColor: [
+              "red", // Color for the first column (Red)
+              "blue", // Color for the second column (Blue)
 
-    console.group("Void");
-    console.log("Score:", voidScore);
-    console.groupEnd();
-    alert(
-        "Player1\n" +
-        "Score: " + scorePlayer1 + "\n" +
-        "Player2\n" +
-        "Score: " + scorePlayer2 + "\n" +
-        "Void\n" +
-        "Score: " + voidScore
+              "green", // Color for the fourth column (Green)
+            ],
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
+    const ctx2 = document.getElementById("myChart2");
+    const DATA_COUNT = this.history.length;
+    const NUMBER_CFG = {
+      count: DATA_COUNT,
+      min: 0,
+      max: this.board.width * this.board.height,
+    };
+
+    console.log(this.scorePlayer1History);
+    console.log(this.scorePlayer2History);
+    const labels = Array.from(
+      { length: this.scorePlayer2History.length + 1 },
+      (_, index) => index
     );
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: "Dataset 1",
+          data: this.scorePlayer1History,
+          borderColor: ["red"],
+          backgroundColor: ["red"],
+          // yAxisID: "y",
+        },
+        {
+          label: "Dataset 2",
+          data: this.scorePlayer2History,
+          borderColor: ["blue"],
+          backgroundColor: ["blue"],
+          // yAxisID: "y1",
+        },
+      ],
+    };
+    const config = {
+      type: "line",
+      data: data,
+      options: {
+        responsive: true,
+        interaction: {
+          mode: "index",
+          intersect: false,
+        },
+        stacked: false,
+        plugins: {
+          title: {
+            display: true,
+            text: "Chart.js Line Chart - Multi Axis",
+          },
+        },
+        scales: {
+          y: {
+            type: "linear",
+            display: true,
+            position: "left",
+          },
+          // y1: {
+          //   type: "linear",
+          //   display: true,
+          //   position: "right",
 
-    // const score = {};
-    // this.board.forEach((tile) => {
-    //   // console.log(tile);
-    //   const color = tile.color.toString();
-    //   if (score[color]) {
-    //     score[color]++;
-    //   } else {
-    //     score[color] = 1;
-    //   }
-    // });
-    //
-    // console.log("Score:", score);
+          //   // grid line settings
+          //   grid: {
+          //     drawOnChartArea: false, // only want the grid lines for one axis to show up
+          //   },
+          // },
+        },
+      },
+    };
+
+    const myChart = new Chart(ctx2, config);
   }
 
   loop(turn) {
+    console.log(this.board);
     for (let i = 0; i < turn; i++) {
-
-
+      console.log(i);
+      // console.log(this.board);
       let isPlayer1Turn = false;
       for (const player of this.players) {
+        // console.log(this.history);
 
         setTimeout(() => {
           // Replace the player tile by the player's drag tile.
+
+          // console.log(ceboard);
+          let scorePlayer1_graph2 = 0;
+          let scorePlayer2_graph2 = 0;
+          // console.log(board);
+          this.board.elements.forEach((tile) => {
+            // console.log(tile);
+            if (tile instanceof PlayerDrag) {
+              // console.log("111111");
+              if (tile.player === this.players[0]) {
+                scorePlayer1_graph2++;
+              } else if (tile.player === this.players[1]) {
+                scorePlayer2_graph2++;
+              }
+            }
+          });
+          this.scorePlayer1History.push(scorePlayer1_graph2);
+          this.scorePlayer2History.push(scorePlayer2_graph2);
+
           this.board.set(
             player.x,
             player.y,
             new PlayerDrag(player.x, player.y, player)
           );
 
-          // Execute the player's instructions.
-          // let isOdd = i % 3 === 0;
           isPlayer1Turn = !isPlayer1Turn;
 
-          let infoTab =  {
-            board : this.board.clone(),
-            turn : i,
+          let infoTab = {
+            board: this.board.clone(),
+            turn: i,
             me: {
-              x : player.x,
-              y : player.y,
+              x: player.x,
+              y: player.y,
               energy: player.energy,
             },
             canMove: {
               left: player.x !== 0,
-              right: player.x !== this.board.width-1,
-              up:player.y !== 0,
-              bottom:player.y !== this.board.height-1
+              right: player.x !== this.board.width - 1,
+              up: player.y !== 0,
+              bottom: player.y !== this.board.height - 1,
             },
             move: {
               UP: "UP",
               BOTTOM: "BOTTOM",
               LEFT: "LEFT",
-              RIGHT: "RIGHT"
+              RIGHT: "RIGHT",
             },
             power: {
-              action:{
+              action: {
                 FILL_ROW: "FILL_ROW",
-                FILL_COLUMN: "FILL_COLUMN"
+                FILL_COLUMN: "FILL_COLUMN",
               },
               cost: {
-                FILL_ROW: 1,
-                FILL_COLUMN: 1
+                FILL_ROW: 10,
+                FILL_COLUMN: 10,
               },
-            }
-          }
+            },
+          };
 
           let instruction = isPlayer1Turn
-              ? pattern1(infoTab)
-              : pattern2(infoTab);
+            ? pattern1(infoTab)
+            : pattern2(infoTab);
 
           this.executeInstruction(player, instruction);
 
@@ -166,7 +254,9 @@ class Game {
       }
     }
     setTimeout(() => {
+      console.log("end of the game");
       this.displayScore();
+      console.log("history", this.history);
     }, turn * Game.REFRESH_RATE);
   }
 
@@ -198,16 +288,16 @@ class Game {
         break;
 
       case "FILL_ROW":
-        if (player.energy >= 10){
+        if (player.energy >= 10) {
           player.energy -= 10;
           this.board.FILL_ROW(player);
         }
         break;
 
       case "FILL_COLUMN":
-        if (player.energy >= 10){
-            player.energy -= 10;
-            this.board.FILL_COLUMN(player);
+        if (player.energy >= 10) {
+          player.energy -= 10;
+          this.board.FILL_COLUMN(player);
         }
         break;
     }
