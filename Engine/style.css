@@ -1,5 +1,5 @@
 #board {
-  background: grey;
+  /*background: grey;*/
 
   display: flex;
   flex-direction: row;
@@ -14,7 +14,8 @@
 
 .led {
   background-color: blue;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   width: 40px;
   height: 40px;
+  border-radius: 10px;
 }

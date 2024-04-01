@@ -1,7 +1,7 @@
 class Game {
-  static WIDTH = 20;
+  static WIDTH = 30;
   static HEIGHT = 20;
-  static REFRESH_RATE = 50;
+  static REFRESH_RATE = 30;
 
   players;
   screen;
@@ -49,18 +49,55 @@ class Game {
     });
   }
   displayScore() {
-    const score = {};
+    let scorePlayer1 = 0;
+    let scorePlayer2 = 0;
+    let voidScore = 0;
+
     this.board.forEach((tile) => {
-      console.log(tile);
-      const color = tile.color.toString();
-      if (score[color]) {
-        score[color]++;
-      } else {
-        score[color] = 1;
+      if (tile instanceof PlayerDrag) {
+        if (tile.player === this.players[0]) {
+          scorePlayer1++;
+        } else if (tile.player === this.players[1]) {
+          scorePlayer2++;
+        }
+      }
+      else{
+        voidScore++;
       }
     });
 
-    console.log("Score:", score);
+    console.group("Player1");
+    console.log("Score:", scorePlayer1);
+    console.groupEnd();
+
+    console.group("Player2");
+    console.log("Score:", scorePlayer2);
+    console.groupEnd();
+
+    console.group("Void");
+    console.log("Score:", voidScore);
+    console.groupEnd();
+    alert(
+        "Player1\n" +
+        "Score: " + scorePlayer1 + "\n" +
+        "Player2\n" +
+        "Score: " + scorePlayer2 + "\n" +
+        "Void\n" +
+        "Score: " + voidScore
+    );
+
+    // const score = {};
+    // this.board.forEach((tile) => {
+    //   // console.log(tile);
+    //   const color = tile.color.toString();
+    //   if (score[color]) {
+    //     score[color]++;
+    //   } else {
+    //     score[color] = 1;
+    //   }
+    // });
+    //
+    // console.log("Score:", score);
   }
 
   loop(turn) {
@@ -80,7 +117,6 @@ class Game {
 
           // Execute the player's instructions.
           // let isOdd = i % 3 === 0;
-          console.log(isPlayer1Turn)
           isPlayer1Turn = !isPlayer1Turn;
 
           let infoTab =  {

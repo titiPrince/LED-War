@@ -64,8 +64,6 @@ class Led extends Element {
     this.html = document.createElement("div");
     this.html.className = "led";
 
-    this.html.innerHTML = `${x}, ${y} led`;
-
     parent.appendChild(this.html);
   }
 
