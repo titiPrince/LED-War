@@ -46,16 +46,34 @@ class Grid {
     clear() {
         this.setAll(null);
     }
+
+    clone() {
+        let newGrid = new Grid(this.width, this.height);
+        newGrid.elements = this.elements.map((element) => element.clone());
+        return newGrid;
+    }
 }
 
 class Element {
     x;
     y;
     color;
+    energy;
 
-    constructor(x, y, color) {
+    constructor(x, y, color,energy) {
         this.x = x;
         this.y = y;
         this.color = color;
+        this.energy = 0
+    }
+
+    clone() {
+        return new Element(this.x, this.y, this.color);
+    }
+    setEnergy(value){
+        this.energy= value
+    }
+    addEnergy(){
+        this.energy++;
     }
 }

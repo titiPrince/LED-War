@@ -23,7 +23,7 @@ class Game {
 
     this.initPlayers();
 
-    this.loop(20);
+    this.loop(100);
   }
 
   initPlayers() {
@@ -36,7 +36,7 @@ class Game {
     let player2 = new Player(
       Math.round(Math.random() * this.screen.width),
       Math.round(Math.random() * this.screen.height),
-      new Color(255, 255, 0)
+      new Color(0, 0, 255)
     );
 
     this.addPlayer(player1);
@@ -62,9 +62,14 @@ class Game {
 
     console.log("Score:", score);
   }
+
   loop(turn) {
     for (let i = 0; i < turn; i++) {
+
+
+      let isPlayer1Turn = false;
       for (const player of this.players) {
+
         setTimeout(() => {
           // Replace the player tile by the player's drag tile.
           this.board.set(
@@ -74,11 +79,51 @@ class Game {
           );
 
           // Execute the player's instructions.
-          let instructionPlayer1 = pattern1(this.board, i);
-          this.executeInstruction(player, instructionPlayer1);
+          // let isOdd = i % 3 === 0;
+          console.log(isPlayer1Turn)
+          isPlayer1Turn = !isPlayer1Turn;
+
+          let infoTab =  {
+            board : this.board.clone(),
+            turn : i,
+            me: {
+              x : player.x,
+              y : player.y,
+              energy: player.energy,
+            },
+            canMove: {
+              left: player.x !== 0,
+              right: player.x !== this.board.width-1,
+              up:player.y !== 0,
+              bottom:player.y !== this.board.height-1
+            },
+            move: {
+              UP: "UP",
+              BOTTOM: "BOTTOM",
+              LEFT: "LEFT",
+              RIGHT: "RIGHT"
+            },
+            power: {
+              action:{
+                FILL_ROW: "FILL_ROW",
+                FILL_COLUMN: "FILL_COLUMN"
+              },
+              cost: {
+                FILL_ROW: 1,
+                FILL_COLUMN: 1
+              },
+            }
+          }
+
+          let instruction = isPlayer1Turn
+              ? pattern1(infoTab)
+              : pattern2(infoTab);
+
+          this.executeInstruction(player, instruction);
 
           // Add the player to the board.
           this.board.set(player.x, player.y, player);
+          player.energy++;
           this.refreshScreen();
           console.log();
         }, i * Game.REFRESH_RATE);
@@ -114,6 +159,20 @@ class Game {
 
       case "RIGHT":
         player.moveRight();
+        break;
+
+      case "FILL_ROW":
+        if (player.energy >= 10){
+          player.energy -= 10;
+          this.board.FILL_ROW(player);
+        }
+        break;
+
+      case "FILL_COLUMN":
+        if (player.energy >= 10){
+            player.energy -= 10;
+            this.board.FILL_COLUMN(player);
+        }
         break;
     }
   }

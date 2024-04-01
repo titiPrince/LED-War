@@ -12,10 +12,10 @@ class Player extends Element {
   }
 
   moveUp() {
-    this.y++;
+    this.y--;
   }
 
   moveDown() {
-    this.y--;
+    this.y++;
   }
 }
