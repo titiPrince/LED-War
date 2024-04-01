@@ -9,7 +9,11 @@ class Game {
 
   constructor() {
     this.players = [];
-    this.screen = new Screen(document.getElementById("board"), Game.WIDTH, Game.HEIGHT);
+    this.screen = new Screen(
+      document.getElementById("board"),
+      Game.WIDTH,
+      Game.HEIGHT
+    );
     this.board = new Board(Game.WIDTH, Game.HEIGHT);
   }
 
@@ -19,7 +23,7 @@ class Game {
 
     this.initPlayers();
 
-    this.loop(100);
+    this.loop(20);
   }
 
   initPlayers() {
@@ -44,13 +48,30 @@ class Game {
       this.screen.setLed(tile.x, tile.y, tile.color);
     });
   }
+  displayScore() {
+    const score = {};
+    this.board.forEach((tile) => {
+      console.log(tile);
+      const color = tile.color.toString();
+      if (score[color]) {
+        score[color]++;
+      } else {
+        score[color] = 1;
+      }
+    });
 
+    console.log("Score:", score);
+  }
   loop(turn) {
     for (let i = 0; i < turn; i++) {
       for (const player of this.players) {
         setTimeout(() => {
           // Replace the player tile by the player's drag tile.
-          this.board.set(player.x, player.y, new PlayerDrag(player.x, player.y, player));
+          this.board.set(
+            player.x,
+            player.y,
+            new PlayerDrag(player.x, player.y, player)
+          );
 
           // Execute the player's instructions.
           let instructionPlayer1 = pattern1(this.board, i);
@@ -58,11 +79,14 @@ class Game {
 
           // Add the player to the board.
           this.board.set(player.x, player.y, player);
-
           this.refreshScreen();
+          console.log();
         }, i * Game.REFRESH_RATE);
       }
     }
+    setTimeout(() => {
+      this.displayScore();
+    }, turn * Game.REFRESH_RATE);
   }
 
   addPlayer(player) {
@@ -76,16 +100,20 @@ class Game {
 
   executeInstruction(player, instruction) {
     switch (instruction) {
-      case "UP": player.moveUp();
+      case "UP":
+        player.moveUp();
         break;
 
-      case "BOTTOM": player.moveDown();
+      case "BOTTOM":
+        player.moveDown();
         break;
 
-      case "LEFT": player.moveLeft();
+      case "LEFT":
+        player.moveLeft();
         break;
 
-      case "RIGHT": player.moveRight();
+      case "RIGHT":
+        player.moveRight();
         break;
     }
   }
