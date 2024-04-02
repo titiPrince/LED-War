@@ -1,7 +1,7 @@
 class Game {
   static WIDTH = 30;
   static HEIGHT = 20;
-  static REFRESH_RATE = 15;
+  static REFRESH_RATE = 10;
 
   players;
   screen;
@@ -26,7 +26,7 @@ class Game {
 
     this.initPlayers();
     console.log(this.board);
-    this.loop(100);
+    this.loop(500);
   }
 
   initPlayers() {
@@ -105,8 +105,8 @@ class Game {
       max: this.board.width * this.board.height,
     };
 
-    console.log(this.scorePlayer1History);
-    console.log(this.scorePlayer2History);
+    // console.log(this.scorePlayer1History);
+    // console.log(this.scorePlayer2History);
     const labels = Array.from(
       { length: this.scorePlayer2History.length + 1 },
       (_, index) => index
@@ -170,9 +170,9 @@ class Game {
   }
 
   loop(turn) {
-    console.log(this.board);
+    // console.log(this.board);
     for (let i = 0; i < turn; i++) {
-      console.log(i);
+      // console.log(i);
       // console.log(this.board);
       let isPlayer1Turn = false;
       for (const player of this.players) {
@@ -182,22 +182,6 @@ class Game {
           // Replace the player tile by the player's drag tile.
 
           // console.log(ceboard);
-          let scorePlayer1_graph2 = 0;
-          let scorePlayer2_graph2 = 0;
-          // console.log(board);
-          this.board.elements.forEach((tile) => {
-            // console.log(tile);
-            if (tile instanceof PlayerDrag) {
-              // console.log("111111");
-              if (tile.player === this.players[0]) {
-                scorePlayer1_graph2++;
-              } else if (tile.player === this.players[1]) {
-                scorePlayer2_graph2++;
-              }
-            }
-          });
-          this.scorePlayer1History.push(scorePlayer1_graph2);
-          this.scorePlayer2History.push(scorePlayer2_graph2);
 
           this.board.set(
             player.x,
@@ -214,12 +198,33 @@ class Game {
               x: player.x,
               y: player.y,
               energy: player.energy,
+              left:
+                this.board.get(player.x - 1, player.y).player === player &&
+                player.x - 1 >= 0,
+              right:
+                this.board.get(player.x + 1, player.y).player === player &&
+                player.x + 1 !== this.board.width - 1,
+              up:
+                this.board.get(player.x, player.y - 1).player === player &&
+                player.y - 1 >= 0,
+              bottom:
+                this.board.get(player.x, player.y + 1).player === player &&
+                player.y + 1 !== this.board.height - 1,
             },
             canMove: {
               left: player.x !== 0,
               right: player.x !== this.board.width - 1,
               up: player.y !== 0,
               bottom: player.y !== this.board.height - 1,
+            },
+            ennemys: {
+              left:
+                player.x !== 0
+                  ? this.board.get(player.x - 1, player.y).player !== player
+                  : null,
+              right: this.board.get(player.x + 1, player.y).player !== player,
+              up: this.board.get(player.x, player.y - 1).player !== player,
+              bottom: this.board.get(player.x, player.y + 1).player !== player,
             },
             move: {
               UP: "UP",
@@ -249,7 +254,22 @@ class Game {
           this.board.set(player.x, player.y, player);
           player.energy++;
           this.refreshScreen();
-          console.log();
+          let scorePlayer1_graph2 = 0;
+          let scorePlayer2_graph2 = 0;
+          // console.log(board);
+          this.board.elements.forEach((tile) => {
+            // console.log(tile);
+            if (tile instanceof PlayerDrag) {
+              // console.log("111111");
+              if (tile.player === this.players[0]) {
+                scorePlayer1_graph2++;
+              } else if (tile.player === this.players[1]) {
+                scorePlayer2_graph2++;
+              }
+            }
+          });
+          this.scorePlayer1History.push(scorePlayer1_graph2);
+          this.scorePlayer2History.push(scorePlayer2_graph2);
         }, i * Game.REFRESH_RATE);
       }
     }
