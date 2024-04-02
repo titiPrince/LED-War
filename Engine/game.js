@@ -192,8 +192,9 @@ class Game {
           isPlayer1Turn = !isPlayer1Turn;
 
           let infoTab = {
-            board: this.board.clone(),
+            board: this.board,
             turn: i,
+            player: player,
             me: {
               x: player.x,
               y: player.y,

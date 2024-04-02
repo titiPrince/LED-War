@@ -1,10 +1,10 @@
-const e = require("express");
-const g = require("vue-carousel-3d");
+// const e = require("express");
+// const g = require("vue-carousel-3d");
 
 function pattern1(game) {
-  console.log(game);
+  // console.log(game);
   const directions = ["UP", "BOTTOM", "LEFT", "RIGHT"];
-  console.log(directions[Math.floor(Math.random() * directions.length)]);
+  // console.log(directions[Math.floor(Math.random() * directions.length)]);
   let direction = directions[Math.floor(Math.random() * directions.length)];
   if (game.me.energy > 10) {
     return "FILL_ROW";

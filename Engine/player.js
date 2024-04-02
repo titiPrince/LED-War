@@ -18,4 +18,8 @@ class Player extends Element {
   moveDown() {
     this.y++;
   }
+
+  clone() {
+    return new Player(this.x, this.y, this.color);
+  }
 }
