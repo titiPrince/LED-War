@@ -1,7 +1,7 @@
 class Game {
-  static WIDTH = 30;
-  static HEIGHT = 20;
-  static REFRESH_RATE = 10;
+  // static WIDTH;
+  // static HEIGHT;
+  static REFRESH_RATE = 30;
 
   players;
   screen;
@@ -9,14 +9,16 @@ class Game {
   history;
   scorePlayer1History = [];
   scorePlayer2History = [];
-  constructor() {
+  script;
+  constructor(height, width, script) {
     this.players = [];
-    this.screen = new Screen(
-      document.getElementById("board"),
-      Game.WIDTH,
-      Game.HEIGHT
-    );
-    this.board = new Board(Game.WIDTH, Game.HEIGHT);
+    // this.WIDTH = width;
+    // this.HEIGHT = height;
+    this.script = script;
+    // console.log(Game.WIDTH);
+    // console.log(Game.HEIGHT);
+    this.screen = new Screen(document.getElementById("board"), width, height);
+    this.board = new Board(width, height);
     this.history = [];
   }
 
@@ -193,6 +195,8 @@ class Game {
 
           let infoTab = {
             board: this.board,
+
+            // INFO
             turn: i,
             player: player,
             me: {
@@ -227,6 +231,8 @@ class Game {
               up: this.board.get(player.x, player.y - 1).player !== player,
               bottom: this.board.get(player.x, player.y + 1).player !== player,
             },
+
+            //ACTION
             move: {
               UP: "UP",
               BOTTOM: "BOTTOM",
@@ -237,18 +243,20 @@ class Game {
               action: {
                 FILL_ROW: "FILL_ROW",
                 FILL_COLUMN: "FILL_COLUMN",
+                SPLASH: "SPLASH",
               },
               cost: {
                 FILL_ROW: 10,
                 FILL_COLUMN: 10,
+                SPLASH: 10,
               },
             },
           };
-
+          // console.log(this.script);
           let instruction = isPlayer1Turn
             ? pattern1(infoTab)
-            : pattern2(infoTab);
-
+            : eval(this.script);
+          console.log(instruction);
           this.executeInstruction(player, instruction);
 
           // Add the player to the board.
@@ -319,6 +327,12 @@ class Game {
         if (player.energy >= 10) {
           player.energy -= 10;
           this.board.FILL_COLUMN(player);
+        }
+        break;
+      case "SPLASH":
+        if (player.energy >= 10) {
+          player.energy -= 10;
+          this.board.SPLASH(player);
         }
         break;
     }

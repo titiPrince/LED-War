@@ -1,38 +1,103 @@
 class Board extends Grid {
-    constructor(width, height) {
-        super(width, height);
+  constructor(width, height) {
+    super(width, height);
+  }
+
+  init() {
+    this.forEach((element) => {
+      this.set(element.x, element.y, new Empty(element.x, element.y));
+    });
+  }
+
+  get(x, y) {
+    // console.log("coords", x, y, this.coordsToIndex(x, y))
+    return this.elements[this.coordsToIndex(x, y)];
+  }
+
+  FILL_ROW(player) {
+    let value = 5;
+    for (let i = player.x; i <= player.x + value; i++) {
+      if (i < this.width - 1) {
+        this.set(i, player.y, new PlayerDrag(i, player.y, player));
+      }
     }
-
-    init() {
-        this.forEach((element) => {
-            this.set(element.x, element.y, new Empty(element.x, element.y));
-        });
+    for (let i = player.x; i >= player.x - value; i--) {
+      if (i >= 0) {
+        this.set(i, player.y, new PlayerDrag(i, player.y, player));
+      }
     }
+  }
 
-    get(x, y) {
-        // console.log("coords", x, y, this.coordsToIndex(x, y))
-        return this.elements[this.coordsToIndex(x, y)];
+  FILL_COLUMN(player) {
+    let value = 5;
+    for (let i = player.y; i <= player.y + value; i++) {
+      if (i < this.height - 1) {
+        this.set(player.x, i, new PlayerDrag(player.x, i, player));
+      }
     }
-
-    FILL_ROW(player){
-        for(let i = 0 ; i < this.width;i++){
-
-            this.set(
-                i,
-                player.y,
-                new PlayerDrag(i, player.y, player)
-            );
-        }
+    for (let i = player.y; i >= player.y - value; i--) {
+      if (i >= 0) {
+        this.set(player.x, i, new PlayerDrag(player.x, i, player));
+      }
     }
-
-    FILL_COLUMN(player){
-        for(let i = 0 ; i < this.height;i++){
-
-            this.set(
-                player.x,
-                i,
-                new PlayerDrag(player.x, i, player)
-            );
-        }
+  }
+  SPLASH(player) {
+    let value = 3;
+    for (let i = player.x; i <= player.x + value; i++) {
+      if (i < this.width - 1) {
+        this.set(i, player.y, new PlayerDrag(i, player.y, player));
+      }
     }
+    for (let i = player.x; i >= player.x - value; i--) {
+      if (i >= 0) {
+        this.set(i, player.y, new PlayerDrag(i, player.y, player));
+      }
+    }
+    for (let i = player.y; i <= player.y + value; i++) {
+      if (i < this.height - 1) {
+        this.set(player.x, i, new PlayerDrag(player.x, i, player));
+      }
+    }
+    for (let i = player.y; i >= player.y - value; i--) {
+      if (i >= 0) {
+        this.set(player.x, i, new PlayerDrag(player.x, i, player));
+      }
+    }
+    for (
+      let i = player.x, j = player.y;
+      i <= player.x + value && j <= player.y + value;
+      i++, j++
+    ) {
+      if (i < this.width - 1 && j < this.height - 1) {
+        this.set(i, j, new PlayerDrag(i, j, player));
+      }
+    }
+    for (
+      let i = player.x, j = player.y;
+      i >= player.x - value && j >= player.y - value;
+      i--, j--
+    ) {
+      if (i >= 0 && j >= 0) {
+        this.set(i, j, new PlayerDrag(i, j, player));
+      }
+    }
+    for (
+      let i = player.x, j = player.y;
+      i <= player.x + value && j >= player.y - value;
+      i++, j--
+    ) {
+      if (i < this.width - 1 && j >= 0) {
+        this.set(i, j, new PlayerDrag(i, j, player));
+      }
+    }
+    for (
+      let i = player.x, j = player.y;
+      i >= player.x - value && j <= player.y + value;
+      i--, j++
+    ) {
+      if (i >= 0 && j < this.height - 1) {
+        this.set(i, j, new PlayerDrag(i, j, player));
+      }
+    }
+  }
 }

@@ -5,83 +5,47 @@ let imAtRight = false;
 
 let isTop = null;
 
-function pattern2(game) {
+function pattern2(infoTab) {
   if (isTop == null) {
-    isTop = !game.canMove.top;
+    isTop = !infoTab.canMove.top;
   }
 
-  if (game.me.energy >= game.power.cost.FILL_ROW) {
+  if (infoTab.me.energy >= infoTab.power.cost.FILL_ROW) {
     let pros = 0;
 
-    console.log('start')
-    for (let i = 0; i < game.board.width; i++) {
-      let tile = game.board.get(i, game.me.y);
-      console.log(tile)
+    console.log("start");
+    for (let i = 0; i < infoTab.board.width; i++) {
+      let tile = infoTab.board.get(i, infoTab.me.y);
+      // console.log(tile);
 
       if (tile instanceof Empty) {
         pros++;
-      }
-      else if (tile instanceof PlayerDrag) {
-        if (tile.player !== game.player) pros++;
+      } else if (tile instanceof PlayerDrag) {
+        if (tile.player !== infoTab.player) pros++;
       }
     }
 
-    console.log(pros)
-    if (pros >= (game.board.width / 3) * 2) {
-      return game.power.action.FILL_ROW;
+    // console.log(pros)
+    if (pros >= (infoTab.board.width / 3) * 2) {
+      return infoTab.power.action.FILL_ROW;
     }
   }
 
   if (isTop) {
-    if (game.canMove.bottom) {
-      return game.move.BOTTOM;
+    if (infoTab.canMove.bottom) {
+      return infoTab.move.BOTTOM;
     }
 
     isTop = false;
-    return game.move.UP;
-  }
-  else {
-    if (game.canMove.up) {
-      return game.move.UP;
+    return infoTab.move.UP;
+  } else {
+    if (infoTab.canMove.up) {
+      return infoTab.move.UP;
     }
 
     isTop = true;
-    return game.move.UP;
+    return infoTab.move.UP;
   }
-
-
-
-  // if (isLeft) {
-  //   return game.move.RIGHT;
-  // }
-  // else {
-  //   return game.move.LEFT;
-  // }
-
-  // if (game.me.energy >= game.power.cost.FILL_COLUMN) {
-  //   console.log(imAtRight, imAtLeft, imAtTop, imAtBottom, game.me.energy)
-  //   if (imAtLeft || imAtRight) return game.power.action.FILL_ROW;
-  //   if (imAtTop || imAtBottom) return game.power.action.FILL_COLUMN;
-  // }
-  // if (game.canMove.up && !imAtTop) {
-  //   return game.move.UP;
-  // }
-  // else if (game.canMove.left && !imAtLeft) {
-  //   imAtTop = true;
-  //   return game.move.LEFT;
-  // }
-  // else if (game.canMove.bottom && !imAtBottom) {
-  //   imAtLeft = true;
-  //   return game.move.BOTTOM;
-  // }
-  // else if (game.canMove.right) {
-  //   imAtBottom = true;
-  //   return game.move.RIGHT;
-  // }
-  // else {
-  //   imAtTop = false;
-  //   imAtLeft = false;
-  //   imAtBottom = false;
-  //   return game.move.UP;
-  // }
 }
+
+pattern2(infoTab);

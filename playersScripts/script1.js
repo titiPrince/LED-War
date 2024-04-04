@@ -7,7 +7,7 @@ function pattern1(game) {
   // console.log(directions[Math.floor(Math.random() * directions.length)]);
   let direction = directions[Math.floor(Math.random() * directions.length)];
   if (game.me.energy > 10) {
-    return "FILL_ROW";
+    return "SPLASH";
   } else if (game.ennemys.right) {
     return game.move.RIGHT;
   } else if (game.ennemys.bottom) {
