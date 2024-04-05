@@ -5,7 +5,9 @@
   flex-direction: row;
   gap: 2px;
 }
-
+body {
+  background-color: beige;
+}
 .line {
   display: flex;
   flex-direction: column;
@@ -15,7 +17,7 @@
 .led {
   background-color: blue;
   /*border: 1px solid black;*/
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   border-radius: 10px;
 }

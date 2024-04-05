@@ -14,11 +14,7 @@ class Screen extends Grid {
       line.classList.add("line");
 
       for (let y = 0; y < this.height; y++) {
-        this.set(
-            x,
-            y,
-            new Led(line, x, y, new Color(0, 0, 0))
-        );
+        this.set(x, y, new Led(line, x, y, new Color(0, 0, 0)));
       }
 
       this.container.appendChild(line);
@@ -28,7 +24,8 @@ class Screen extends Grid {
   }
 
   setLed(x, y, color) {
-    if (!this.initialized) throw new Error("Screen not initialized. Please call init() first.");
+    if (!this.initialized)
+      throw new Error("Screen not initialized. Please call init() first.");
 
     let led = this.get(x, y);
     led.setColor(color);

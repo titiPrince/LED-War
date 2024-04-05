@@ -20,23 +20,41 @@
     <h1>Led Wars</h1>
     <section>
       <label for="height">Hauteur</label>
-      <input type="number" id="height" value="10" min="4" max="200" />
+      <input type="number" id="height" value="30" min="4" max="200" />
       <label for="width">Largeur</label>
-      <input type="number" id="width" value="20" min="4" max="200" />
+      <input type="number" id="width" value="70" min="4" max="200" />
       <label for="turn">Nombre de tour</label>
-      <input type="number" id="turn" value="200" min="1" max="10000" />
+      <input type="number" id="turn" value="500" min="1" max="10000" />
       <label for="refresh">Vitesse de jeu (0 = instantané , 1000 = lent)</label>
-      <input type="number" id="refresh" value="1" min="0" max="2000" />
+      <input type="number" id="refresh" value="20" min="0" max="2000" />
       <label for="numberOfPlayers">Nombre de joueurs</label>
-      <input type="number" id="numberOfPlayers" value="2" min="1" max="3" />
-      
-      <div>
-       <select name="script" id="scriptSelector">
-        <option value="">Choisissez votre adeversaire</option>
-        <option value="Script 1">Script 1</option>
-        <option value="Script 2">Script 2</option>
-      </select>
-      <div>
+      <input type="number" id="numberOfPlayers" value="2" min="1" max="8"s />
+      <div id="selectorsContainer">
+        
+      </div>
+     <script>
+      document.getElementById('numberOfPlayers').addEventListener('change', function() {
+        var numberOfPlayers = parseInt(this.value);
+        var selectorsContainer = document.getElementById('selectorsContainer');
+        selectorsContainer.innerHTML = ''; // Clear previous selectors
+
+        for (var i = 0; i < numberOfPlayers; i++) {
+            var select = document.createElement('select');
+            select.name = 'script';
+            select.classList.add('scriptSelector');
+            select.id = 'scriptSelector' + (i + 1); // Unique ID for each select
+                      
+            for (var j = 1; j <= 8; j++) {
+                var option = document.createElement('option');
+                option.value = j;
+                option.textContent = 'Script ' + j;
+                select.appendChild(option);
+            }
+
+            selectorsContainer.appendChild(select);
+        }
+    });
+     </script>
 
       </div>
       </div>

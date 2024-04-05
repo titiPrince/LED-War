@@ -9,10 +9,20 @@ class Game {
   board;
   history;
   scorePlayersHistory;
-
+  defaultScript = [
+    pattern1,
+    pattern2,
+    pattern3,
+    pattern1,
+    pattern2,
+    pattern3,
+    pattern1,
+    pattern2,
+  ];
   scriptUser;
   turnCount;
   scriptsEnnemy;
+  tabScriptsNumber;
   constructor(
     height,
     width,
@@ -20,10 +30,11 @@ class Game {
     scriptsEnnemy,
     numberOfPlayers,
     turnCount,
-    refreshRate
+    refreshRate,
+    tabScriptsNumber
   ) {
     this.players = [];
-
+    this.tabScriptsNumber = tabScriptsNumber;
     this.scriptsEnnemy = scriptsEnnemy;
     this.refreshRate = refreshRate;
     this.scriptUser = scriptUser;
@@ -48,6 +59,10 @@ class Game {
       new Color(255, 0, 0),
       new Color(0, 0, 255),
       new Color(0, 255, 0),
+      new Color(0, 125, 0),
+      new Color(125, 0, 0),
+      new Color(0, 0, 125),
+      new Color(100, 100, 0),
     ];
     for (let i = 0; i < numberOfPlayers; i++) {
       let player = new Player(
@@ -74,7 +89,6 @@ class Game {
     }
     labelsName = [...labelsName, "void"];
     console.log(scores);
-    // console.log([...scores, 999]);
     let voidScore = 0;
     for (let i = 0; i < this.players.length; i++) {
       this.board.forEach((tile) => {
@@ -112,7 +126,9 @@ class Game {
             backgroundColor: [
               "red", // Color for the first column (Red)
               "blue", // Color for the second column (Blue)
-
+              "green", // Color for the fourth column (Green)
+              "pink", // Color for the fourth column (Green)
+              "yellow", // Color for the fourth column (Green)
               "green", // Color for the fourth column (Green)
               "pink", // Color for the fourth column (Green)
               "yellow", // Color for the fourth column (Green)
@@ -145,7 +161,16 @@ class Game {
     );
     // console.log(labels);
     let sampleDataset = [];
-    let color = ["red", "blue", "green", "pink", "yellow"];
+    let color = [
+      "red",
+      "blue",
+      "green",
+      "pink",
+      "yellow",
+      "red",
+      "blue",
+      "green",
+    ];
     for (let i = 0; i < this.players.length; i++) {
       console.log(this.scorePlayersHistory[i]);
       sampleDataset.push({
@@ -196,7 +221,7 @@ class Game {
       this.scorePlayersHistory.push([]);
     }
     console.log(this.scorePlayersHistory);
-    let defaultScript = [pattern1, pattern2, pattern3];
+
     for (let i = 0; i < turn; i++) {
       for (let j = 0; j < this.players.length; j++) {
         let player = this.players[j];
@@ -270,8 +295,12 @@ class Game {
             },
           };
 
-          let instruction = defaultScript[j % this.numberOfPlayers](infoTab);
-
+          let currentScriptNumber = this.tabScriptsNumber[j];
+          // console.log(j % this.numberOfPlayers);
+          console.log(currentScriptNumber - 1);
+          let instruction =
+            this.defaultScript[currentScriptNumber - 1](infoTab);
+          console.log(this.defaultScript[currentScriptNumber - 1]);
           this.executeInstruction(player, instruction);
           let scorePlayer_graph2 = 0;
           this.board.elements.forEach((tile) => {

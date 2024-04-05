@@ -5,6 +5,12 @@ document.getElementById("start").addEventListener("click", () => {
   let turn = document.getElementById("turn").value;
   let refreshRate = document.getElementById("refresh").value;
   let numberOfPlayers = document.getElementById("numberOfPlayers").value;
+  let scriptsNumber = document.getElementsByClassName("scriptSelector");
+  let tabScriptsNumber = [];
+  for (let i = 0; i < scriptsNumber.length; i++) {
+    tabScriptsNumber.push(scriptsNumber[i].value);
+  }
+  console.log(tabScriptsNumber);
   let game = new Game(
     height,
     width,
@@ -12,7 +18,8 @@ document.getElementById("start").addEventListener("click", () => {
     "script1",
     numberOfPlayers,
     turn,
-    refreshRate
+    refreshRate,
+    tabScriptsNumber
   );
   game.initGame();
 });
