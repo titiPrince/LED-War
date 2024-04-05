@@ -46,20 +46,23 @@ class Game {
   }
 
   initPlayers(numberOfPlayers) {
-    let arrayOfColors = [
-      new Color(255, 0, 0),
-      new Color(0, 0, 255),
-      new Color(0, 255, 0),
-      new Color(100, 10, 50),
-      new Color(125, 0, 0),
-      new Color(0, 0, 125),
-      new Color(100, 100, 255),
-    ];
+    // let arrayOfColors = [
+    //   new Color(255, 0, 0),
+    //   new Color(0, 0, 255),
+    //   new Color(0, 255, 0),
+    //   new Color(100, 10, 50),
+    //   new Color(125, 0, 0),
+    //   new Color(0, 0, 125),
+    //   new Color(100, 100, 255),
+    // ];
+
+    let hueStep = 360 / numberOfPlayers;
+
     for (let i = 0; i < numberOfPlayers; i++) {
       let player = new Player(
         Math.round(Math.random() * this.screen.width),
         Math.round(Math.random() * this.screen.height),
-        arrayOfColors[i]
+        Color.fromHSL(hueStep * i, 1, 0.5, 1),
       );
 
       this.addPlayer(player);
@@ -105,6 +108,14 @@ class Game {
 
     const ctx = document.getElementById("myChart");
 
+    let chartColors = [];
+
+    for (const player of this.players) {
+      chartColors.push(player.color.toHex());
+    }
+
+    console.log(chartColors);
+
     new Chart(ctx, {
       type: "bar",
       data: {
@@ -114,16 +125,7 @@ class Game {
             label: "DOminance",
             data: [...scores, voidScore],
             borderWidth: 1,
-            backgroundColor: [
-              "red", // Color for the first column (Red)
-              "blue", // Color for the second column (Blue)
-              "green", // Color for the fourth column (Green)
-              "pink", // Color for the fourth column (Green)
-              "yellow", // Color for the fourth column (Green)
-              "green", // Color for the fourth column (Green)
-              "pink", // Color for the fourth column (Green)
-              "yellow", // Color for the fourth column (Green)
-            ],
+            backgroundColor: chartColors,
           },
         ],
       },
@@ -152,23 +154,13 @@ class Game {
     );
     // console.log(labels);
     let sampleDataset = [];
-    let color = [
-      "red",
-      "blue",
-      "green",
-      "pink",
-      "yellow",
-      "red",
-      "blue",
-      "green",
-    ];
     for (let i = 0; i < this.players.length; i++) {
       console.log(this.scorePlayersHistory[i]);
       sampleDataset.push({
         label: "Player " + (i + 1),
         data: this.scorePlayersHistory[i],
-        borderColor: ["red"],
-        backgroundColor: [color[i]],
+        borderColor: [chartColors[i]],
+        backgroundColor: [chartColors[i]],
       });
     }
     console.log(this.scorePlayersHistory);
@@ -289,8 +281,7 @@ class Game {
           let currentScriptNumber = this.tabScriptsNumber[j];
           // console.log(j % this.numberOfPlayers);
           // console.log(currentScriptNumber - 1);
-          let instruction =
-            this.defaultScript[currentScriptNumber - 1](infoTab);
+          let instruction = this.defaultScript[currentScriptNumber - 1](infoTab);
           // console.log(this.defaultScript[currentScriptNumber - 1]);
           this.executeInstruction(player, instruction);
           let scorePlayer_graph2 = 0;
