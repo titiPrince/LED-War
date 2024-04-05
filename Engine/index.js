@@ -1,9 +1,19 @@
 document.getElementById("start").addEventListener("click", () => {
   let height = document.getElementById("height").value;
   let width = document.getElementById("width").value;
-  let script1 = document.getElementById("textarea").value;
-  // eval(script1);
-  let game = new Game(height, width, script1);
+  let scriptUser1 = document.getElementById("textarea").value;
+  let turn = document.getElementById("turn").value;
+  let refreshRate = document.getElementById("refresh").value;
+  let numberOfPlayers = document.getElementById("numberOfPlayers").value;
+  let game = new Game(
+    height,
+    width,
+    scriptUser1,
+    "script1",
+    numberOfPlayers,
+    turn,
+    refreshRate
+  );
   game.initGame();
 });
 
