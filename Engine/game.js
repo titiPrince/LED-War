@@ -8,8 +8,8 @@ class Game {
   screen;
   board;
   history;
-  scorePlayer1History = [];
-  scorePlayer2History = [];
+  scorePlayersHistory;
+
   scriptUser;
   turnCount;
   scriptsEnnemy;
@@ -66,39 +66,35 @@ class Game {
     });
   }
   displayScore() {
-    let scores = [0, 0];
+    // let scores = [0] * this.players.length;
+    let scores = new Array(this.players.length).fill(0);
+    let labelsName = [];
+    for (let i = 0; i < this.players.length; i++) {
+      labelsName.push("Player " + (i + 1));
+    }
+    labelsName = [...labelsName, "void"];
+    console.log(scores);
+    // console.log([...scores, 999]);
     let voidScore = 0;
     for (let i = 0; i < this.players.length; i++) {
-      //   let player = this.players[i];
-      //   console.log(player);
-      //   let score = 0;
-      //   this.board.forEach((tile) => {
-      //     if (tile instanceof PlayerDrag) {
-      //       console.log("a player");
-      //       console.log(tile.player);
-      //       if (tile.player === this.players[i]) {
-      //         score++;
-      //       }
-      //     } else {
-      //       voidScore++;
-      //     }
-      //   });
-      //   scores.push(score);
-      //   console.log(`Player ${i + 1} score: ${score}`);
-      // }
       this.board.forEach((tile) => {
         if (tile instanceof PlayerDrag) {
-          console.log("a player");
-          if (tile.player === this.players[0]) {
-            scores[0]++;
-          } else if (tile.player === this.players[1]) {
-            scores[1]++;
+          // console.log("a player");
+          // console.log(tile);
+          if (tile.player === this.players[i]) {
+            scores[i]++;
+          } else {
+            ("erreur");
           }
-        } else {
-          voidScore++;
         }
       });
     }
+    this.board.forEach((tile) => {
+      if (tile instanceof PlayerDrag === false) {
+        voidScore++;
+      }
+    });
+
     console.log(scores);
     let playersName;
 
@@ -107,11 +103,11 @@ class Game {
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["PLayer1", "Player2", "Void"],
+        labels: labelsName,
         datasets: [
           {
             label: "DOminance",
-            data: [scores[0], scores[1], voidScore],
+            data: [...scores, voidScore],
             borderWidth: 1,
             backgroundColor: [
               "red", // Color for the first column (Red)
@@ -144,27 +140,26 @@ class Game {
     // console.log(this.scorePlayer1History);
     // console.log(this.scorePlayer2History);
     const labels = Array.from(
-      { length: this.scorePlayer2History.length + 1 },
+      { length: this.scorePlayersHistory[0].length + 1 },
       (_, index) => index
     );
+    // console.log(labels);
+    let sampleDataset = [];
+    let color = ["red", "blue", "green", "pink", "yellow"];
+    for (let i = 0; i < this.players.length; i++) {
+      console.log(this.scorePlayersHistory[i]);
+      sampleDataset.push({
+        label: "Player " + (i + 1),
+        data: this.scorePlayersHistory[i],
+        borderColor: ["red"],
+        backgroundColor: [color[i]],
+      });
+    }
+    console.log(this.scorePlayersHistory);
+    console.log(sampleDataset);
     const data = {
       labels: labels,
-      datasets: [
-        {
-          label: "Dataset 1",
-          data: this.scorePlayer1History,
-          borderColor: ["red"],
-          backgroundColor: ["red"],
-          // yAxisID: "y",
-        },
-        {
-          label: "Dataset 2",
-          data: this.scorePlayer2History,
-          borderColor: ["blue"],
-          backgroundColor: ["blue"],
-          // yAxisID: "y1",
-        },
-      ],
+      datasets: [...sampleDataset],
     };
     const config = {
       type: "line",
@@ -196,21 +191,18 @@ class Game {
   }
 
   loop(turn) {
-    console.log(this.players);
+    this.scorePlayersHistory = [];
+    for (let i = 0; i < this.players.length; i++) {
+      this.scorePlayersHistory.push([]);
+    }
+    console.log(this.scorePlayersHistory);
     let defaultScript = [pattern1, pattern2, pattern3];
     for (let i = 0; i < turn; i++) {
-      // console.log(i);
-      // console.log(this.board);
-      // let isPlayer1Turn = false;
       for (let j = 0; j < this.players.length; j++) {
         let player = this.players[j];
-        // for (const player of this.players) {
-        // console.log(this.history);
 
         setTimeout(() => {
           // Replace the player tile by the player's drag tile.
-
-          // console.log(ceboard);
 
           this.board.set(
             player.x,
@@ -281,36 +273,31 @@ class Game {
           let instruction = defaultScript[j % this.numberOfPlayers](infoTab);
 
           this.executeInstruction(player, instruction);
-
-          // Add the player to the board.
-          this.board.set(player.x, player.y, player);
-          player.energy++;
-          this.refreshScreen();
-          let scorePlayer1_graph2 = 0;
-          let scorePlayer2_graph2 = 0;
-          // console.log(board);
+          let scorePlayer_graph2 = 0;
           this.board.elements.forEach((tile) => {
-            // console.log(tile);
             if (tile instanceof PlayerDrag) {
-              // console.log("111111");
-              if (tile.player === this.players[0]) {
-                scorePlayer1_graph2++;
-              } else if (tile.player === this.players[1]) {
-                scorePlayer2_graph2++;
+              if (tile.player === player) {
+                scorePlayer_graph2++;
               }
             }
           });
-          this.scorePlayer1History.push(scorePlayer1_graph2);
-          this.scorePlayer2History.push(scorePlayer2_graph2);
-          // console.log(this.refreshRate);
+          // console.log("player " + j + "score:" + scorePlayer_graph2);
+          this.scorePlayersHistory[j].push(scorePlayer_graph2);
+
+          // Add the player to the board.
+
+          this.board.set(player.x, player.y, player);
+          player.energy++;
+          this.refreshScreen();
         }, i * this.refreshRate);
       }
     }
     setTimeout(() => {
       console.log("end of the game");
+      console.log(this.scorePlayersHistory);
       this.displayScore();
       console.log("history", this.history);
-    }, turn * Game.refreshRate + 1000);
+    }, turn * this.refreshRate + 300);
   }
 
   addPlayer(player) {
