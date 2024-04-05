@@ -13,6 +13,9 @@
     <script src="../playersScripts/script1.js"></script>
     <script src="../playersScripts/script2.js"></script>
     <script src="../playersScripts/script3.js"></script>
+    <script src="../playersScripts/script4.js"></script>
+    <script src="../playersScripts/script5.js"></script>
+
     <script src="./game.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
@@ -44,7 +47,7 @@
             select.classList.add('scriptSelector');
             select.id = 'scriptSelector' + (i + 1); // Unique ID for each select
                       
-            for (var j = 1; j <= 8; j++) {
+            for (var j = 1; j <= 5; j++) {
                 var option = document.createElement('option');
                 option.value = j;
                 option.textContent = 'Script ' + j;

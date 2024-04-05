@@ -9,16 +9,7 @@ class Game {
   board;
   history;
   scorePlayersHistory;
-  defaultScript = [
-    pattern1,
-    pattern2,
-    pattern3,
-    pattern1,
-    pattern2,
-    pattern3,
-    pattern1,
-    pattern2,
-  ];
+  defaultScript = [pattern1, pattern2, pattern3, pattern4, pattern5];
   scriptUser;
   turnCount;
   scriptsEnnemy;
@@ -59,10 +50,10 @@ class Game {
       new Color(255, 0, 0),
       new Color(0, 0, 255),
       new Color(0, 255, 0),
-      new Color(0, 125, 0),
+      new Color(100, 10, 50),
       new Color(125, 0, 0),
       new Color(0, 0, 125),
-      new Color(100, 100, 0),
+      new Color(100, 100, 255),
     ];
     for (let i = 0; i < numberOfPlayers; i++) {
       let player = new Player(
@@ -297,10 +288,10 @@ class Game {
 
           let currentScriptNumber = this.tabScriptsNumber[j];
           // console.log(j % this.numberOfPlayers);
-          console.log(currentScriptNumber - 1);
+          // console.log(currentScriptNumber - 1);
           let instruction =
             this.defaultScript[currentScriptNumber - 1](infoTab);
-          console.log(this.defaultScript[currentScriptNumber - 1]);
+          // console.log(this.defaultScript[currentScriptNumber - 1]);
           this.executeInstruction(player, instruction);
           let scorePlayer_graph2 = 0;
           this.board.elements.forEach((tile) => {
