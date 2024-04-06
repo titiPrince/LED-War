@@ -1,14 +1,48 @@
-class Screen extends Grid {
+class Element {
+  x;
+  y;
+  color;
+  energy;
+
+  constructor(x, y, color, energy) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.energy = 0;
+  }
+
+  clone() {
+    return new Element(this.x, this.y, this.color);
+  }
+  setEnergy(value) {
+    this.energy = value;
+  }
+  addEnergy() {
+    this.energy++;
+  }
+}
+
+class Screen {
   initialized = false;
   container;
-
+  width;
+  height;
+  elements = [];
   constructor(container, width, height) {
-    super(width, height);
-
+    this.width = width;
+    this.height = height;
     this.container = container;
   }
 
   init() {
+    console.log("ref");
+    console.log(this.width);
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        // console.log("x", x, "y", y);
+        this.elements.push(new Element(x, y, new Color(0, 0, 0)));
+      }
+    }
     for (let x = 0; x < this.width; x++) {
       let line = document.createElement("div");
       line.classList.add("line");
@@ -49,6 +83,47 @@ class Screen extends Grid {
 
   clear() {
     this.setAllLed(new Color(0, 0, 0));
+  }
+
+  limitX(x) {
+    return Math.min(this.width - 1, Math.max(0, x));
+  }
+
+  limitY(y) {
+    return Math.min(this.height - 1, Math.max(0, y));
+  }
+
+  coordsToIndex(x, y) {
+    return this.limitX(x) * this.height + this.limitY(y);
+  }
+
+  get(x, y) {
+    // console.log("coords", x, y, this.coordsToIndex(x, y))
+    return this.elements[this.coordsToIndex(x, y)];
+  }
+
+  set(x, y, object) {
+    this.elements[this.coordsToIndex(x, y)] = object;
+  }
+
+  setAll(object) {
+    this.elements.forEach((element) => {
+      element = object;
+    });
+  }
+
+  forEach(callback) {
+    this.elements.forEach(callback);
+  }
+
+  clear() {
+    this.setAll(null);
+  }
+
+  clone() {
+    let newGrid = new Grid(this.width, this.height);
+    newGrid.elements = this.elements.map((element) => element.clone());
+    return newGrid;
   }
 }
 
@@ -96,7 +171,9 @@ class Color {
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    let h, s, l = (max + min) / 2;
+    let h,
+      s,
+      l = (max + min) / 2;
 
     if (max === min) {
       h = s = 0;
@@ -105,9 +182,15 @@ class Color {
       s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
       switch (max) {
-        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / d + 2; break;
-        case b: h = (r - g) / d + 4; break;
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
       }
 
       h /= 6;
@@ -122,7 +205,7 @@ class Color {
   }
 
   static rgbToHex(r, g, b) {
-    return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
+    return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
   }
 
   /**
@@ -145,10 +228,10 @@ class Color {
     }
 
     return new Color(
-        Math.round(r * 255),
-        Math.round(g * 255),
-        Math.round(b * 255),
-        a
+      Math.round(r * 255),
+      Math.round(g * 255),
+      Math.round(b * 255),
+      a
     );
   }
 

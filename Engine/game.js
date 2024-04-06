@@ -2,7 +2,7 @@ import fs from "node:fs";
 import Board from "./Board/board.js";
 import Player from "./player.js";
 import * as tiles from "./Board/tiles.js";
-import { Color }from "./utils.js";
+import { Color } from "./utils.js";
 import url from "url";
 
 import ivm from "isolated-vm";
@@ -10,13 +10,11 @@ import ivm from "isolated-vm";
 const isolate = new ivm.Isolate({ memoryLimit: 512 });
 const script = isolate.compileScriptSync('main("test");');
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 export default class Game {
   board;
-
   turnCount;
-
   history;
   players;
 
@@ -30,7 +28,9 @@ export default class Game {
       board: [],
       stats: [],
       infoTabs: [],
-    }
+      boardWidth: width,
+      boardHeight: height,
+    };
 
     this.initPlayers(playersData);
     this.initGame();
@@ -46,13 +46,16 @@ export default class Game {
     const username = script.name;
     const version = script.version;
 
-    let content = fs.readFileSync(`${__dirname}../players/${username}/${version}.js`, "utf8");
+    let content = fs.readFileSync(
+      `${__dirname}../players/${username}/${version}.js`,
+      "utf8"
+    );
 
     const context = isolate.createContextSync();
 
     const jail = context.global;
 
-    jail.setSync('global', jail.derefInto());
+    jail.setSync("global", jail.derefInto());
 
     context.evalSync(content);
 
@@ -117,17 +120,17 @@ export default class Game {
         y: player.y,
         energy: player.energy,
         left:
-            this.board.get(player.x - 1, player.y).player === player &&
-            player.x - 1 >= 0,
+          this.board.get(player.x - 1, player.y).player === player &&
+          player.x - 1 >= 0,
         right:
-            this.board.get(player.x + 1, player.y).player === player &&
-            player.x + 1 !== this.board.width - 1,
+          this.board.get(player.x + 1, player.y).player === player &&
+          player.x + 1 !== this.board.width - 1,
         up:
-            this.board.get(player.x, player.y - 1).player === player &&
-            player.y - 1 >= 0,
+          this.board.get(player.x, player.y - 1).player === player &&
+          player.y - 1 >= 0,
         bottom:
-            this.board.get(player.x, player.y + 1).player === player &&
-            player.y + 1 !== this.board.height - 1,
+          this.board.get(player.x, player.y + 1).player === player &&
+          player.y + 1 !== this.board.height - 1,
       },
       canMove: {
         left: player.x !== 0,
@@ -137,9 +140,9 @@ export default class Game {
       },
       ennemys: {
         left:
-            player.x !== 0
-                ? this.board.get(player.x - 1, player.y).player !== player
-                : null,
+          player.x !== 0
+            ? this.board.get(player.x - 1, player.y).player !== player
+            : null,
         right: this.board.get(player.x + 1, player.y).player !== player,
         up: this.board.get(player.x, player.y - 1).player !== player,
         bottom: this.board.get(player.x, player.y + 1).player !== player,
