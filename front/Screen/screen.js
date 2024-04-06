@@ -39,7 +39,6 @@ class Screen {
     console.log(this.width);
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
-        // console.log("x", x, "y", y);
         this.elements.push(new Element(x, y, new Color(0, 0, 0)));
       }
     }
