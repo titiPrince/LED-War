@@ -169,15 +169,15 @@ class Color {
   }
 
   setG(g) {
-      this.g = this.limit(g);
+    this.g = this.limit(g);
   }
 
   setB(b) {
-      this.b = this.limit(b);
+    this.b = this.limit(b);
   }
 
   setA(a) {
-      this.a = a;
+    this.a = a;
   }
 
   setRGB(r, g, b) {

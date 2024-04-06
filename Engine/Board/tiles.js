@@ -1,4 +1,7 @@
-class Tiles extends Element {
+import { Element } from "../grid.js";
+import { Color } from "../utils.js";
+
+export class Tiles extends Element {
   static WALL = 0;
   static PLAYER_DRAG = 1;
   static EMPTY = 2;
@@ -12,7 +15,7 @@ class Tiles extends Element {
   }
 }
 
-class Empty extends Tiles {
+export class Empty extends Tiles {
   static TYPE = Tiles.EMPTY;
   static COLOR = new Color(0, 0, 0);
 
@@ -21,7 +24,7 @@ class Empty extends Tiles {
   }
 }
 
-class Wall extends Tiles {
+export class Wall extends Tiles {
   static TYPE = Tiles.WALL;
   static COLOR = new Color(255, 255, 255);
 
@@ -30,7 +33,7 @@ class Wall extends Tiles {
   }
 }
 
-class PlayerDrag extends Tiles {
+export class PlayerDrag extends Tiles {
   static TYPE = Tiles.PLAYER_DRAG;
 
   player;

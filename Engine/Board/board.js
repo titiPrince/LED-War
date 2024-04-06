@@ -1,4 +1,7 @@
-class Board extends Grid {
+import Grid from "./../grid.js";
+import { Empty, PlayerDrag } from "./tiles.js";
+
+export default class Board extends Grid {
   constructor(width, height) {
     super(width, height);
   }
@@ -12,6 +15,20 @@ class Board extends Grid {
   get(x, y) {
     // console.log("coords", x, y, this.coordsToIndex(x, y))
     return this.elements[this.coordsToIndex(x, y)];
+  }
+
+  toColorMap() {
+    let colorMap = [];
+
+    this.forEach((element) => {
+      colorMap.push({
+        r: element.color.r,
+        g: element.color.g,
+        b: element.color.b,
+      });
+    });
+
+    return colorMap;
   }
 
   FILL_ROW(player) {

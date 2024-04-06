@@ -1,4 +1,6 @@
-class Grid {
+import { Color } from "./utils.js";
+
+export default class Grid {
   width = 0;
   height = 0;
   elements = [];
@@ -56,7 +58,7 @@ class Grid {
   }
 }
 
-class Element {
+export class Element {
   x;
   y;
   color;
