@@ -6,23 +6,17 @@ function showGame(data) {
     data.boardWidth
   );
   screen.init();
-  console.log(data);
-  console.log(screen);
+
   for (let i = 0; i < data.board.length; i++) {
-    let board = data.board[i];
-    // console.log(board);
+    let actions = data.board[i];
+      
+
     setTimeout(() => {
-      for (let j = 0; j < board.length; j++) {
-        let row = Math.floor(j / data.boardHeight);
-        let col = j % data.boardHeight;
-        console.log(`Row: ${row}, Column: ${col}`);
-        // console.log(board[j]);
-        screen.setLed(
-          col,
-          row,
-          new Color(board[j].r, board[j].g, board[j].b, 1)
-        );
+
+      for (const action of actions) {
+        screen.setLed(action.x,action.y,new Color(action.r,action.g,action.b));
       }
-    }, i * 10);
+
+    }, i * 200);
   }
 }

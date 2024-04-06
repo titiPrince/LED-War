@@ -58,6 +58,7 @@ export default class Board extends Grid {
       }
     }
   }
+
   SPLASH(player) {
     let value = 3;
     for (let i = player.x; i <= player.x + value; i++) {

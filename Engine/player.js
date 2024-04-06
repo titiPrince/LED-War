@@ -13,7 +13,7 @@ export default class Player extends Element {
 
   play(functionCallCode, infoTab) {
     this.script.evalSync(`game = ${JSON.stringify(infoTab)};`);
-    return functionCallCode.runSync(this.script);
+    return functionCallCode.runSync(this.script, {timeout: 1000});
   }
 
   moveRight() {

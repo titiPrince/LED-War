@@ -26,7 +26,13 @@ export default class Game {
     this.players = [];
     this.history = {
       board: [],
-      stats: [],
+      stats: {
+        "Victor v1.0": [
+                 ],
+        "Evan v1.0": [
+          1,2,
+        ]
+      },
       infoTabs: [],
       boardWidth: width,
       boardHeight: height,
@@ -85,29 +91,58 @@ export default class Game {
 
   loop(turn) {
     for (let t = 0; t < turn; t++) {
+      this.history.board.push([]);
+
       for (let j = 0; j < this.players.length; j++) {
         let player = this.players[j];
 
         // Replace the player tile by the player's drag tile.
+        let newTile = new tiles.PlayerDrag(player.x, player.y, player);
+
         this.board.set(
           player.x,
           player.y,
-          new tiles.PlayerDrag(player.x, player.y, player)
+          newTile
         );
+
+        this.history.board[t].push({
+          x: player.x,
+          y: player.y,
+          r: newTile.color.r,
+          g: newTile.color.g,
+          b: newTile.color.b,
+        });
 
         let instruction = player.play(script, this.getInfoTab(player, t));
         this.executeInstruction(player, instruction);
+
+        // Check the replaced tile by the player.
+        this.history.board[t].push({
+          x: player.x,
+          y: player.y,
+          r: player.color.r,
+          g: player.color.g,
+          b: player.color.b,
+        });
 
         // Add the player to the board.
         this.board.set(player.x, player.y, player);
         player.energy++;
       }
 
-      // console.log("Turn", t, "done");
-      this.history.board.push(this.board.toColorMap());
+
+
+      // this.history.board.push(this.board.toColorMap());
+    }
+
+    // Release the VM contexts of players.
+    for (let player of this.players) {
+      player.script.release();
     }
   }
+getStats(){
 
+}
   getInfoTab(player, turn) {
     return {
       board: this.board,
