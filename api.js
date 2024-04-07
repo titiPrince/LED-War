@@ -14,7 +14,9 @@ router.get("/players", (req, res) => {
 });
 
 router.post("/game", (req, res) => {
+    console.time("game");
     res.json(playGame(req));
+    console.timeEnd("game");
 });
 
 export default router;

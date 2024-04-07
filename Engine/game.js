@@ -96,6 +96,7 @@ export default class Game {
   }
 
   loop(turn) {
+    console.time("loop")
     for (let t = 0; t < turn; t++) {
       this.history.board.push([]);
 
@@ -115,7 +116,8 @@ export default class Game {
           b: newTile.color.b,
         });
 
-        let instruction = player.play(script, this.getInfoTab(player, t));
+        let infoTab = new ivm.ExternalCopy(this.getInfoTab(player, t)).copyInto();
+        let instruction = player.play(script, infoTab); // new ivm.Reference(this.getInfoTab(player, t))
         this.executeInstruction(player, instruction);
 
         // Check the replaced tile by the player.
@@ -137,8 +139,10 @@ export default class Game {
 
     // Release the VM contexts of players.
     for (let player of this.players) {
-      player.script.release();
+      player.context.release();
     }
+
+    console.timeEnd("loop")
   }
   getStats() {}
   getInfoTab(player, turn) {

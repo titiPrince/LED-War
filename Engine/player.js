@@ -2,18 +2,27 @@ import {Element} from './grid.js';
 
 export default class Player extends Element {
   name;
-  script;
+  context;
 
   constructor(name, script, x, y, color) {
     super(x, y, color);
 
     this.name = name;
-    this.script = script;
+    this.context = script;
   }
 
-  play(functionCallCode, infoTab) {
-    this.script.evalSync(`game = ${JSON.stringify(infoTab)};`);
-    return functionCallCode.runSync(this.script, {timeout: 1000});
+  play(call, infoTab) {
+    // console.time('eval');
+    // this.script.evalSync(`game = ${JSON.stringify(infoTab)};`);
+    this.context.global.setSync('game', infoTab);
+    // let call = isolate.compileScriptSync(`main(${JSON.stringify(infoTab)});`);
+    // console.timeEnd('eval');
+    // console.time('run');
+    // console.log('resultat:', res);
+
+    // console.timeEnd('run');
+
+    return call.runSync(this.context, {timeout: 5});
   }
 
   moveRight() {
