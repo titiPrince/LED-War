@@ -27,11 +27,8 @@ export default class Game {
     this.history = {
       board: [],
       stats: {
-        "Victor v1.0": [
-                 ],
-        "Evan v1.0": [
-          1,2,
-        ]
+        // "Victor v1.0": [],
+        // "Evan v1.0": [1, 2],
       },
       infoTabs: [],
       boardWidth: width,
@@ -75,7 +72,12 @@ export default class Game {
 
     for (let i = 0; i < numberOfPlayers; i++) {
       let playerData = playersData[i];
+      console.log(playerData);
 
+      //  init the palyers in stats
+      this.history.stats[
+        `${playerData.script.name} v${playerData.script.version}`
+      ] = [];
       const script = this.initScript(playerData.script);
       const name = `${playerData.script.name} v${playerData.script.version}`;
 
@@ -99,11 +101,7 @@ export default class Game {
         // Replace the player tile by the player's drag tile.
         let newTile = new tiles.PlayerDrag(player.x, player.y, player);
 
-        this.board.set(
-          player.x,
-          player.y,
-          newTile
-        );
+        this.board.set(player.x, player.y, newTile);
 
         this.history.board[t].push({
           x: player.x,
@@ -130,8 +128,6 @@ export default class Game {
         player.energy++;
       }
 
-
-
       // this.history.board.push(this.board.toColorMap());
     }
 
@@ -140,9 +136,7 @@ export default class Game {
       player.script.release();
     }
   }
-getStats(){
-
-}
+  getStats() {}
   getInfoTab(player, turn) {
     return {
       board: this.board,
