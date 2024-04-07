@@ -99,6 +99,15 @@ export default class Game {
     console.time("loop")
     for (let t = 0; t < turn; t++) {
       this.history.board.push([]);
+      let infoTab = new ivm.ExternalCopy([
+        this.board.get(0, 0),
+        this.board.get(0, 0),
+        this.board.get(0, 0),
+        this.board.get(0, 0),
+        this.board.get(0, 0),
+        this.board.get(0, 0),
+        this.board.get(0, 0),
+      ]);
 
       for (let j = 0; j < this.players.length; j++) {
         let player = this.players[j];
@@ -116,8 +125,8 @@ export default class Game {
           b: newTile.color.b,
         });
 
-        let infoTab = new ivm.ExternalCopy(this.getInfoTab(player, t)).copyInto();
-        let instruction = player.play(script, infoTab); // new ivm.Reference(this.getInfoTab(player, t))
+
+        let instruction = player.play(script, infoTab.copyInto()); // new ivm.Reference(this.getInfoTab(player, t))
         this.executeInstruction(player, instruction);
 
         // Check the replaced tile by the player.
@@ -146,65 +155,7 @@ export default class Game {
   }
   getStats() {}
   getInfoTab(player, turn) {
-    return {
-      board: this.board,
-
-      // INFO
-      turn: turn,
-      player: player,
-      me: {
-        x: player.x,
-        y: player.y,
-        energy: player.energy,
-        left:
-          this.board.get(player.x - 1, player.y).player === player &&
-          player.x - 1 >= 0,
-        right:
-          this.board.get(player.x + 1, player.y).player === player &&
-          player.x + 1 !== this.board.width - 1,
-        up:
-          this.board.get(player.x, player.y - 1).player === player &&
-          player.y - 1 >= 0,
-        bottom:
-          this.board.get(player.x, player.y + 1).player === player &&
-          player.y + 1 !== this.board.height - 1,
-      },
-      canMove: {
-        left: player.x !== 0,
-        right: player.x !== this.board.width - 1,
-        up: player.y !== 0,
-        bottom: player.y !== this.board.height - 1,
-      },
-      ennemys: {
-        left:
-          player.x !== 0
-            ? this.board.get(player.x - 1, player.y).player !== player
-            : null,
-        right: this.board.get(player.x + 1, player.y).player !== player,
-        up: this.board.get(player.x, player.y - 1).player !== player,
-        bottom: this.board.get(player.x, player.y + 1).player !== player,
-      },
-
-      //ACTION
-      move: {
-        UP: "UP",
-        BOTTOM: "BOTTOM",
-        LEFT: "LEFT",
-        RIGHT: "RIGHT",
-      },
-      power: {
-        action: {
-          FILL_ROW: "FILL_ROW",
-          FILL_COLUMN: "FILL_COLUMN",
-          SPLASH: "SPLASH",
-        },
-        cost: {
-          FILL_ROW: 10,
-          FILL_COLUMN: 10,
-          SPLASH: 10,
-        },
-      },
-    };
+    return this.board
   }
 
   addPlayer(player) {
