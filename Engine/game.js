@@ -33,6 +33,7 @@ export default class Game {
       infoTabs: [],
       boardWidth: width,
       boardHeight: height,
+      playersColor: {}
     };
 
     this.initPlayers(playersData);
@@ -72,12 +73,13 @@ export default class Game {
 
     for (let i = 0; i < numberOfPlayers; i++) {
       let playerData = playersData[i];
-      console.log(playerData);
 
       //  init the palyers in stats
       this.history.stats[
         `${playerData.script.name} v${playerData.script.version}`
       ] = [];
+
+
       const script = this.initScript(playerData.script);
       const name = `${playerData.script.name} v${playerData.script.version}`;
 
@@ -86,6 +88,8 @@ export default class Game {
       const color = Color.fromHSL(hueStep * i, 1, 0.5, 1);
 
       let player = new Player(name, script, x, y, color);
+
+      this.history.playersColor[player.name] = {r: player.color.r, g: player.color.g, b: player.color.b};
 
       this.addPlayer(player);
     }
