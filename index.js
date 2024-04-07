@@ -21,6 +21,9 @@ app.use("/api", router);
 app.get("/style", (req, res) => {
   res.sendFile(__dirname + "/front/style.css");
 });
+app.get("/reset", (req, res) => {
+  res.sendFile(__dirname + "/front/reset.css");
+});
 app.get("/Screen.js", (req, res) => {
   res.sendFile(__dirname + "/front/Screen/screen.js");
 });

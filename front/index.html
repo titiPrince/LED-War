@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Led War board</title>
     <link rel="stylesheet" type="text/css" href="style" />
+    <link rel="stylesheet" type="text/css" href="reset" />
 
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,9 +13,9 @@
     <h1>Led Wars</h1>
     <section>
       <label for="height">Hauteur</label>
-      <input type="number" id="height" value="30" min="4" max="200" />
+      <input type="number" id="height" value="20" min="4" max="200" />
       <label for="width">Largeur</label>
-      <input type="number" id="width" value="30" min="4" max="200" />
+      <input type="number" id="width" value="40" min="4" max="200" />
       <label for="turn">Nombre de tour</label>
       <input type="number" id="turn" value="500" min="1" max="10000" />
       <label for="refresh">Vitesse de jeu (0 = instantané , 1000 = lent)</label>
@@ -22,7 +23,6 @@
       <label for="numberOfPlayers">Nombre de joueurs</label>
       <input type="number" id="numberOfPlayers" value="2" min="1" max="8"s />
       <div id="selectorsContainer">
-        
       </div>
      <script>
       document.getElementById('numberOfPlayers').addEventListener('change', function() {
@@ -57,7 +57,22 @@
       </div>
     </section>
     <button id="start">Lancer la partie</button>
-    <div id="board"></div>
+    <div id="game" class="hidden">
+      <ul>
+        <li id="play">Play</li>
+        <li>Pause</li>
+        <li>Replay</li>
+        <li>Close</li>
+      </ul>
+      <ul>
+        <li id="turnCount">Turn:0</li>
+        <li>Points Player1</li>
+        <li>Points PLayer2</li>
+        
+      </ul>
+      <div id="board"></div>
+
+    </div>
     <div>
       <canvas id="myChart"></canvas>
     </div>

@@ -17,7 +17,28 @@ body {
 .led {
   background-color: blue;
   /*border: 1px solid black;*/
-  width: 20px;
-  height: 20px;
+  width: 13px;
+  height: 13px;
   border-radius: 2px;
+}
+#game {
+  width: 100vw;
+}
+#game > ul {
+  /* width: 50%; */
+  border-top: 1vh;
+  height: 6vh;
+  background-color: grey;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+#game > ul > li {
+  justify-self: center;
+  align-self: center;
+}
+#game > ul > li:hover {
+  font-size: 3rem;
+}
+.hidden {
+  display: none;
 }

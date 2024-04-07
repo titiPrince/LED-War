@@ -18,7 +18,7 @@ export default class Game {
   history;
   players;
 
-  constructor(height, width, playersData, turnCount) {
+  constructor(width, height, playersData, turnCount) {
     this.board = new Board(width, height);
 
     this.turnCount = turnCount;
