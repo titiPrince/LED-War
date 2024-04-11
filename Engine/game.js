@@ -18,6 +18,9 @@ export default class Game {
   history;
   players;
 
+  currentTurn = 0;
+  playerTurnChanges = [];
+
   constructor(height, width, playersData, turnCount) {
     this.board = new Board(width, height);
 
@@ -87,7 +90,7 @@ export default class Game {
       const y = Math.round(Math.random() * this.board.height);
       const color = Color.fromHSL(hueStep * i, 1, 0.5, 1);
 
-      let player = new Player(name, script, x, y, color);
+      let player = new Player(i, name, script, x, y, color);
 
       this.history.playersColor[player.name] = {r: player.color.r, g: player.color.g, b: player.color.b};
 
@@ -96,54 +99,34 @@ export default class Game {
   }
 
   loop(turn) {
-    console.time("loop")
-    for (let t = 0; t < turn; t++) {
+    console.time("loop");
+
+    this.playerTurnChanges.push([]);
+
+    this.playerTurnChanges[0] = this.board.toJSON();
+
+    for (this.currentTurn = 0; this.currentTurn < turn; this.currentTurn++) {
       this.history.board.push([]);
-      let infoTab = new ivm.ExternalCopy([
-        this.board.get(0, 0),
-        this.board.get(0, 0),
-        this.board.get(0, 0),
-        this.board.get(0, 0),
-        this.board.get(0, 0),
-        this.board.get(0, 0),
-        this.board.get(0, 0),
-      ]);
 
       for (let j = 0; j < this.players.length; j++) {
+        let infoTab = new ivm.ExternalCopy(this.getLastPlayerTurns());
+
+        this.playerTurnChanges.push([]);
+
         let player = this.players[j];
 
         // Replace the player tile by the player's drag tile.
         let newTile = new tiles.PlayerDrag(player.x, player.y, player);
 
-        this.board.set(player.x, player.y, newTile);
-
-        this.history.board[t].push({
-          x: player.x,
-          y: player.y,
-          r: newTile.color.r,
-          g: newTile.color.g,
-          b: newTile.color.b,
-        });
-
+        this.setTile(player.x, player.y, newTile);
 
         let instruction = player.play(script, infoTab.copyInto()); // new ivm.Reference(this.getInfoTab(player, t))
         this.executeInstruction(player, instruction);
 
-        // Check the replaced tile by the player.
-        this.history.board[t].push({
-          x: player.x,
-          y: player.y,
-          r: player.color.r,
-          g: player.color.g,
-          b: player.color.b,
-        });
-
         // Add the player to the board.
-        this.board.set(player.x, player.y, player);
+        this.setTile(player.x, player.y, player);
         player.energy++;
       }
-
-      // this.history.board.push(this.board.toColorMap());
     }
 
     // Release the VM contexts of players.
@@ -153,7 +136,23 @@ export default class Game {
 
     console.timeEnd("loop")
   }
-  getStats() {}
+
+  setTile(x, y, element) {
+    this.board.set(x, y, element);
+
+    this.history.board[this.currentTurn].push({
+      x: x,
+      y: y,
+      r: element.color.r,
+      g: element.color.g,
+      b: element.color.b,
+    });
+
+    this.playerTurnChanges.at(-1).push(
+        element.toJSON()
+    );
+  }
+
   getInfoTab(player, turn) {
     return this.board
   }
@@ -205,5 +204,21 @@ export default class Game {
 
   getHistory() {
     return this.history;
+  }
+
+  getLastPlayerTurns() {
+    let actions = [];
+
+    let playerCount = this.players.length;
+
+    for (let i = playerCount; i > 0; i--) {
+      let turnActions = this.playerTurnChanges.at(-i);
+
+      if (!turnActions) continue;
+
+      actions.push(...turnActions);
+    }
+
+    return actions;
   }
 }

@@ -80,4 +80,13 @@ export class Element {
   addEnergy() {
     this.energy++;
   }
+
+  toJSON() {
+    return {
+      type: "element",
+      x: this.x,
+      y: this.y,
+      energy: this.energy,
+    };
+  }
 }

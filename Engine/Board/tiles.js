@@ -13,6 +13,15 @@ export class Tiles extends Element {
   toString() {
     return this.constructor.name;
   }
+
+  toJSON() {
+    let json = super.toJSON();
+
+    json.type = "tile";
+    json.category = this.constructor.TYPE;
+
+    return json;
+  }
 }
 
 export class Empty extends Tiles {
@@ -46,5 +55,13 @@ export class PlayerDrag extends Tiles {
 
   static colorEffect(color) {
     return new Color(color.r * 0.5, color.g * 0.5, color.b * 0.5);
+  }
+
+  toJSON() {
+    let json = super.toJSON();
+
+    json.player = this.player.id;
+
+    return json;
   }
 }

@@ -1,12 +1,14 @@
 import {Element} from './grid.js';
 
 export default class Player extends Element {
+  id;
   name;
   context;
 
-  constructor(name, script, x, y, color) {
+  constructor(id, name, script, x, y, color) {
     super(x, y, color);
 
+    this.id = id;
     this.name = name;
     this.context = script;
   }
@@ -43,5 +45,14 @@ export default class Player extends Element {
 
   clone() {
     return new Player(this.x, this.y, this.color);
+  }
+
+  toJSON() {
+    let json = super.toJSON();
+
+    json.type = 'player';
+    json.id = this.id;
+
+    return json;
   }
 }

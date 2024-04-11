@@ -31,6 +31,16 @@ export default class Board extends Grid {
     return colorMap;
   }
 
+  toJSON() {
+    let json = [];
+
+    this.elements.forEach(element => {
+      json.push(element.toJSON());
+    });
+
+    return json;
+  }
+
   FILL_ROW(player) {
     let value = 5;
     for (let i = player.x; i <= player.x + value; i++) {
