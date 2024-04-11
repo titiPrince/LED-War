@@ -118,6 +118,9 @@ export default class Game {
         let instruction = player.play(script, this.getInfoTab(player, t));
         this.executeInstruction(player, instruction);
 
+
+        // calculate score and store in history.data.stats for each palyer
+        
         // Check the replaced tile by the player.
         this.history.board[t].push({
           x: player.x,
