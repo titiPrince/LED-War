@@ -24,29 +24,29 @@
       <div id="selectorsContainer">
         
       </div>
-     <script>
-      document.getElementById('numberOfPlayers').addEventListener('change', function() {
-        var numberOfPlayers = parseInt(this.value);
-        var selectorsContainer = document.getElementById('selectorsContainer');
-        selectorsContainer.innerHTML = ''; // Clear previous selectors
+<!--     <script>-->
+<!--      document.getElementById('numberOfPlayers').addEventListener('change', function() {-->
+<!--        var numberOfPlayers = parseInt(this.value);-->
+<!--        var selectorsContainer = document.getElementById('selectorsContainer');-->
+<!--        selectorsContainer.innerHTML = ''; // Clear previous selectors-->
 
-        for (var i = 0; i < numberOfPlayers; i++) {
-            var select = document.createElement('select');
-            select.name = 'script';
-            select.classList.add('scriptSelector');
-            select.id = 'scriptSelector' + (i + 1); // Unique ID for each select
-                      
-            for (var j = 1; j <= 5; j++) {
-                var option = document.createElement('option');
-                option.value = j;
-                option.textContent = 'Script ' + j;
-                select.appendChild(option);
-            }
+<!--        for (var i = 0; i < numberOfPlayers; i++) {-->
+<!--            var select = document.createElement('select');-->
+<!--            select.name = 'script';-->
+<!--            select.classList.add('scriptSelector');-->
+<!--            select.id = 'scriptSelector' + (i + 1); // Unique ID for each select-->
+<!--                      -->
+<!--            for (var j = 1; j <= 5; j++) {-->
+<!--                var option = document.createElement('option');-->
+<!--                option.value = j;-->
+<!--                option.textContent = 'Script ' + j;-->
+<!--                select.appendChild(option);-->
+<!--            }-->
 
-            selectorsContainer.appendChild(select);
-        }
-    });
-     </script>
+<!--            selectorsContainer.appendChild(select);-->
+<!--        }-->
+<!--    });-->
+<!--     </script>-->
 
       </div>
       </div>
@@ -57,6 +57,17 @@
       </div>
     </section>
     <button id="start">Lancer la partie</button>
+
+    <section id = "vlcPlayer" class="hidden">
+      <button id="play">Play</button>
+      <button id="pause">Pause</button>
+      <button id="next">Next</button>
+      <button id="previous">Previous</button>
+    </section>
+
+
+
+
     <div id="board"></div>
     <div>
       <canvas id="myChart"></canvas>

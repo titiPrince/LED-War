@@ -39,6 +39,7 @@ function initGame() {
       if (response.ok) {
         console.log("Data sent successfully!");
         // console.log(await response.json());
+
         showGame(await response.json());
       } else {
         console.error("Failed to send data:", response.statusText);

@@ -2,7 +2,7 @@ let utils_board = {
     board: [],
     width: undefined,
     height: undefined,
-    playerCount: 2,
+    playerCount: undefined,
     me: {
         id: undefined,
         x: undefined,
@@ -13,11 +13,6 @@ let utils_board = {
 
 function utils() {
     const changes = global.game;
-
-    // console.log('utils_board:', utils_board, changes)
-
-    // if (utils_board === undefined)
-    //     global.utils_board = ;
 
     for (const change of changes) {
         if (change.type === 'info') {
@@ -56,8 +51,6 @@ function main() {
     const canGoRight = data.me.x < data.width - 1;
 
     const move = Math.floor(Math.random() * 4);
-
-    // console.log('move:', move, canGoUp, canGoDown, canGoLeft, canGoRight)
 
     if (data.me.id === 0) {
         if (data.me.y > 2) return 'UP';

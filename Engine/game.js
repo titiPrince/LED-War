@@ -8,7 +8,7 @@ import url from "url";
 import ivm from "isolated-vm";
 
 const isolate = new ivm.Isolate({ memoryLimit: 512 });
-const script = isolate.compileScriptSync('main("test");');
+const script = isolate.compileScriptSync('main()');
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
@@ -77,7 +77,7 @@ export default class Game {
     for (let i = 0; i < numberOfPlayers; i++) {
       let playerData = playersData[i];
 
-      //  init the palyers in stats
+      //  init the players in stats
       this.history.stats[
         `${playerData.script.name} v${playerData.script.version}`
       ] = [];
@@ -119,9 +119,9 @@ export default class Game {
       for (let j = 0; j < this.players.length; j++) {
         let player = this.players[j];
 
+        this.history.stats[player.name].push([]);
         if (this.currentTurn === 0) this.playerTurnChanges[0][0].playerId = player.id;
 
-        // let info = this.getLastPlayerTurns();
         let infoTab = new ivm.ExternalCopy(this.getLastPlayerTurns());
 
         this.playerTurnChanges.push([]);
@@ -131,8 +131,7 @@ export default class Game {
 
         this.setTile(player.x, player.y, newTile);
 
-        // let instruction = player.play(script, info); // new ivm.Reference(this.getInfoTab(player, t))
-        let instruction = player.play(script, infoTab.copyInto()); // new ivm.Reference(this.getInfoTab(player, t))
+        let instruction = player.play(script, infoTab.copyInto());
         this.executeInstruction(player, instruction);
 
         // Add the player to the board.
@@ -140,17 +139,6 @@ export default class Game {
         player.energy++;
       }
     }
-
-    // console.log(this.players[0].game);
-    // let b = this.players[0].game.board;
-    //
-    // for (const bElement of b) {
-    //   if (bElement.category === 1) {
-    //     console.log(bElement)
-    //   }
-    // }
-
-    // console.log(b);
 
     // Release the VM contexts of players.
     for (let player of this.players) {
@@ -161,6 +149,16 @@ export default class Game {
   }
 
   setTile(x, y, element) {
+    let oldElement = this.board.get(x, y);
+
+    if (oldElement instanceof tiles.PlayerDrag) {
+      this.history.stats[oldElement.player.name][this.currentTurn].push(-1);
+    }
+
+    if (element instanceof Player) {
+      this.history.stats[element.name][this.currentTurn].push(1);
+    }
+
     this.board.set(x, y, element);
 
     this.history.board[this.currentTurn].push({
@@ -174,10 +172,6 @@ export default class Game {
     this.playerTurnChanges.at(-1).push(
         element.toJSON()
     );
-  }
-
-  getInfoTab(player, turn) {
-    return this.board
   }
 
   addPlayer(player) {
