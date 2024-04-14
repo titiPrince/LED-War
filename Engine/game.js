@@ -103,23 +103,35 @@ export default class Game {
 
     this.playerTurnChanges.push([]);
 
-    this.playerTurnChanges[0] = this.board.toJSON();
+    this.playerTurnChanges[0].push({
+      type: "info",
+      width: this.board.width,
+      height: this.board.height,
+      playerCount: this.players.length,
+      playerId: undefined, // defined below in the players loop
+    });
+
+    this.playerTurnChanges[0].push(...this.board.toJSON());
 
     for (this.currentTurn = 0; this.currentTurn < turn; this.currentTurn++) {
       this.history.board.push([]);
 
       for (let j = 0; j < this.players.length; j++) {
+        let player = this.players[j];
+
+        if (this.currentTurn === 0) this.playerTurnChanges[0][0].playerId = player.id;
+
+        // let info = this.getLastPlayerTurns();
         let infoTab = new ivm.ExternalCopy(this.getLastPlayerTurns());
 
         this.playerTurnChanges.push([]);
-
-        let player = this.players[j];
 
         // Replace the player tile by the player's drag tile.
         let newTile = new tiles.PlayerDrag(player.x, player.y, player);
 
         this.setTile(player.x, player.y, newTile);
 
+        // let instruction = player.play(script, info); // new ivm.Reference(this.getInfoTab(player, t))
         let instruction = player.play(script, infoTab.copyInto()); // new ivm.Reference(this.getInfoTab(player, t))
         this.executeInstruction(player, instruction);
 
@@ -128,6 +140,17 @@ export default class Game {
         player.energy++;
       }
     }
+
+    // console.log(this.players[0].game);
+    // let b = this.players[0].game.board;
+    //
+    // for (const bElement of b) {
+    //   if (bElement.category === 1) {
+    //     console.log(bElement)
+    //   }
+    // }
+
+    // console.log(b);
 
     // Release the VM contexts of players.
     for (let player of this.players) {
@@ -166,6 +189,7 @@ export default class Game {
     switch (instruction) {
       case "UP":
         player.moveUp();
+
         break;
 
       case "BOTTOM":
@@ -179,27 +203,12 @@ export default class Game {
       case "RIGHT":
         player.moveRight();
         break;
-
-      case "FILL_ROW":
-        if (player.energy >= 10) {
-          player.energy -= 10;
-          this.board.FILL_ROW(player);
-        }
-        break;
-
-      case "FILL_COLUMN":
-        if (player.energy >= 10) {
-          player.energy -= 10;
-          this.board.FILL_COLUMN(player);
-        }
-        break;
-      case "SPLASH":
-        if (player.energy >= 10) {
-          player.energy -= 10;
-          this.board.SPLASH(player);
-        }
-        break;
     }
+
+    player.setPosition(
+      this.board.limitX(player.x),
+      this.board.limitY(player.y)
+    );
   }
 
   getHistory() {

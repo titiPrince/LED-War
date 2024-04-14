@@ -14,6 +14,7 @@ export default class Player extends Element {
   }
 
   play(call, infoTab) {
+    // return this.playerScriptSimulation(infoTab);
     // console.time('eval');
     // this.script.evalSync(`game = ${JSON.stringify(infoTab)};`);
     this.context.global.setSync('game', infoTab);
@@ -41,6 +42,11 @@ export default class Player extends Element {
 
   moveDown() {
     this.y++;
+  }
+
+  setPosition(x, y) {
+    this.x = x;
+    this.y = y;
   }
 
   clone() {

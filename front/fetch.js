@@ -15,13 +15,13 @@ function initGame() {
       {
         script: {
           name: "Evan",
-          version: "1_0_1",
+          version: "1_0_0",
         },
       },
       {
         script: {
           name: "Victor",
-          version: "1_0_1",
+          version: "1_0_0",
         },
       },
     ],
