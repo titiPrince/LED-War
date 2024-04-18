@@ -64,7 +64,7 @@ function getGameTurnData() {
             gameState.playerCount = change.playerCount;
             gameState.me.id = change.playerId;
 
-            gameState.board = new Array(gameState.width * gameState.height);
+            // gameState.board = new Array(gameState.width * gameState.height);
         }
         else {
             let x = change.x;
@@ -91,7 +91,7 @@ function main() {
     const me = data.me;
     const target = {
         x: me.id,
-        y: 0
+        y: (data.turn % (data.height *2)) - (data.height - 1)
     }
 
     return me.goTo(target.x, target.y);

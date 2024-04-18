@@ -15,15 +15,195 @@ function initGame() {
       {
         script: {
           name: "Evan",
-          version: "1_0_0",
+          version: "3_0_0",
         },
       },
       {
         script: {
-          name: "Victor",
-          version: "1_0_0",
+          name: "Evan",
+          version: "3_0_0",
         },
       },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      },
+      {
+        script: {
+          name: "Evan",
+          version: "3_0_0",
+        }
+      }
     ],
   };
   console.log(dataToSend);
