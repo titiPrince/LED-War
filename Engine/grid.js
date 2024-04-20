@@ -29,7 +29,6 @@ export default class Grid {
   }
 
   get(x, y) {
-    // console.log("coords", x, y, this.coordsToIndex(x, y))
     return this.elements[this.coordsToIndex(x, y)];
   }
 
