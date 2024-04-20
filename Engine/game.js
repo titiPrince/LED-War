@@ -145,7 +145,8 @@ export default class Game {
       for (let j = 0; j < this.players.length; j++) {
         let player = this.players[j];
 
-        this.history.stats[player.name].push([]);
+        // this.history.stats[player.name].push([]);
+
         if (this.currentTurn === 0)
           this.playerTurnChanges[0][0].playerId = player.id;
 
@@ -177,15 +178,20 @@ export default class Game {
 
   setTile(x, y, element) {
     let oldElement = this.board.get(x, y);
-    console.log("this.setTile");
-    console.log(this.history.stats);
-    console.log(oldElement);
     if (oldElement instanceof tiles.PlayerDrag) {
-      this.history.stats[oldElement.player.name][this.currentTurn].push(-1);
+      let playerStat = this.history.stats[oldElement.player.name];
+
+      if (playerStat[this.currentTurn] === undefined) playerStat[this.currentTurn] = [];
+
+      playerStat[this.currentTurn].push(-1);
     }
 
     if (element instanceof Player) {
-      this.history.stats[element.name][this.currentTurn].push(1);
+      let playerStat = this.history.stats[element.name];
+
+      if (playerStat[this.currentTurn] === undefined) playerStat[this.currentTurn] = [];
+
+      playerStat[this.currentTurn].push(1);
     }
 
     this.board.set(x, y, element);
