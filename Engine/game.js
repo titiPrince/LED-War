@@ -8,7 +8,7 @@ import url from "url";
 import ivm from "isolated-vm";
 
 const isolate = new ivm.Isolate({ memoryLimit: 512 });
-const script = isolate.compileScriptSync('main()');
+const script = isolate.compileScriptSync("main()");
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
@@ -36,9 +36,8 @@ export default class Game {
       infoTabs: [],
       boardWidth: width,
       boardHeight: height,
-      playersColor: {}
+      playersColor: {},
     };
-
 
     this.initGame(playersData);
   }
@@ -98,20 +97,18 @@ export default class Game {
 
   initPlayers(playersData) {
     let numberOfPlayers = playersData.length;
+    console.log(numberOfPlayers);
 
     let hueStep = 360 / numberOfPlayers;
 
     for (let i = 0; i < numberOfPlayers; i++) {
       let playerData = playersData[i];
-
+      console.log("player " + i);
       //  init the players in stats
-      this.history.stats[
-        `${playerData.script.name} v${playerData.script.version}`
-      ] = [];
-
+      const name = `${playerData.script.name} v${playerData.script.version}`;
+      this.history.stats[name] = [];
 
       const script = this.initScript(playerData.script);
-      const name = `${playerData.script.name} v${playerData.script.version}`;
 
       const x = Math.round(Math.random() * this.board.width);
       const y = Math.round(Math.random() * this.board.height);
@@ -119,8 +116,12 @@ export default class Game {
 
       let player = new Player(i, name, script, x, y, color);
 
-      this.history.playersColor[player.name] = {r: player.color.r, g: player.color.g, b: player.color.b};
-
+      this.history.playersColor[player.name] = {
+        r: player.color.r,
+        g: player.color.g,
+        b: player.color.b,
+      };
+      console.log(this.history.playersColor);
       this.addPlayer(player);
     }
   }
@@ -145,7 +146,8 @@ export default class Game {
         let player = this.players[j];
 
         this.history.stats[player.name].push([]);
-        if (this.currentTurn === 0) this.playerTurnChanges[0][0].playerId = player.id;
+        if (this.currentTurn === 0)
+          this.playerTurnChanges[0][0].playerId = player.id;
 
         let infoTab = new ivm.ExternalCopy(this.getLastPlayerTurns());
 
@@ -170,12 +172,14 @@ export default class Game {
       player.context.release();
     }
 
-    console.timeEnd("loop")
+    console.timeEnd("loop");
   }
 
   setTile(x, y, element) {
     let oldElement = this.board.get(x, y);
-
+    console.log("this.setTile");
+    console.log(this.history.stats);
+    console.log(oldElement);
     if (oldElement instanceof tiles.PlayerDrag) {
       this.history.stats[oldElement.player.name][this.currentTurn].push(-1);
     }
@@ -197,9 +201,7 @@ export default class Game {
       b: element.color.b,
     });
 
-    this.playerTurnChanges.at(-1).push(
-        element.toJSON()
-    );
+    this.playerTurnChanges.at(-1).push(element.toJSON());
   }
 
   addPlayer(player) {

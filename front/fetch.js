@@ -5,11 +5,13 @@ document.getElementById("start").addEventListener("click", function () {
 function initGame() {
   let playerCount = document.getElementById("numberOfPlayers").value;
 
-  let players = new Array(parseInt(playerCount)).fill({script: {
+  let players = new Array(parseInt(playerCount)).fill({
+    script: {
       name: "Evan",
       version: "Sinus",
-    }});
-
+    },
+  });
+  console.log(players);
   const dataToSend = {
     settings: {
       board: {
@@ -18,7 +20,20 @@ function initGame() {
       },
       turn: document.getElementById("turn").value,
     },
-    players: players,
+    players: [
+      {
+        script: {
+          name: "Evan",
+          version: "Sinus",
+        },
+      },
+      {
+        script: {
+          name: "Victor",
+          version: "1_0_0",
+        },
+      },
+    ],
   };
   console.log(dataToSend);
   // Fetch request to send data to the Node.js server

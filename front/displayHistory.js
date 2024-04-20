@@ -9,7 +9,7 @@ function showGame(data) {
   screen = new Screen(
     document.getElementById("board"),
     data.boardWidth,
-    data.boardHeight,
+    data.boardHeight
   );
   screen.init();
   initListeners();
@@ -86,11 +86,13 @@ function calculateScores() {
 }
 function displayScore() {
   let labelsName = [];
+  let chartColors = [];
+
   for (const [player, value] of Object.entries(fetchData.stats)) {
     labelsName.push(player);
   }
-
-  let chartColors = ["blue", "red"];
+  console.log(fetchData);
+  // for(const [player, value] of Object.entries(fetchData.stats))
 
   let scoresChart1 = [];
   scoresChart1.push(scores[labelsName[0]][scores[labelsName[0]].length - 1]);
