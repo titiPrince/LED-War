@@ -116,11 +116,7 @@ export default class Game {
 
       let player = new Player(i, name, script, x, y, color);
 
-      this.history.playersColor[player.name] = {
-        r: player.color.r,
-        g: player.color.g,
-        b: player.color.b,
-      };
+      this.history.playersColor[player.name] = color.toHex();
       console.log(this.history.playersColor);
       this.addPlayer(player);
     }
