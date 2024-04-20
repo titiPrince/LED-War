@@ -25,7 +25,7 @@ export default class Player extends Element {
 
     // console.timeEnd('run');
 
-    return call.runSync(this.context, {timeout: 5});
+    return call.runSync(this.context, {timeout: 50000});
   }
 
   moveRight() {

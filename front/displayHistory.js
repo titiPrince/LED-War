@@ -8,8 +8,8 @@ function showGame(data) {
 
   screen = new Screen(
     document.getElementById("board"),
+    data.boardWidth,
     data.boardHeight,
-    data.boardWidth
   );
   screen.init();
   initListeners();
