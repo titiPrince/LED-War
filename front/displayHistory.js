@@ -2,8 +2,8 @@ function showGame(data) {
   console.log(data);
   let screen = new Screen(
     document.getElementById("board"),
+    data.boardWidth,
     data.boardHeight,
-    data.boardWidth
   );
   screen.init();
 

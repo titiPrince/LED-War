@@ -21,7 +21,7 @@ export default class Game {
   currentTurn = 0;
   playerTurnChanges = [];
 
-  constructor(height, width, playersData, turnCount) {
+  constructor(width, height, playersData, turnCount) {
     this.board = new Board(width, height);
 
     this.turnCount = turnCount;
@@ -39,14 +39,41 @@ export default class Game {
       playersColor: {}
     };
 
-    this.initPlayers(playersData);
-    this.initGame();
+
+    this.initGame(playersData);
   }
 
-  initGame() {
-    this.board.init();
+  initGame(playersData) {
+    this.initBoard();
+    this.initPlayers(playersData);
 
     this.loop(this.turnCount);
+  }
+
+  initBoard() {
+    this.board.init();
+
+    // this.history.board.push([]);
+    this.playerTurnChanges.push([]);
+
+    // this.board.elements.forEach((element) => {
+    //   this.setTile(element.x, element.y, new tiles.Empty(element.x, element.y));
+    // });
+
+    let len = this.board.elements.length;
+    for (let i = 0; i < len; i++) {
+      let element = this.board.elements[i];
+      // this.setTile(element.x, element.y, element);
+      // this.board.set(element.x, element.y, element);
+      this.history.board.push([]);
+      this.history.board[this.currentTurn].push({
+        x: element.x,
+        y: element.y,
+        r: element.color.r,
+        g: element.color.g,
+        b: element.color.b,
+      });
+    }
   }
 
   initScript(script) {
@@ -100,8 +127,6 @@ export default class Game {
 
   loop(turn) {
     console.time("loop");
-
-    this.playerTurnChanges.push([]);
 
     this.playerTurnChanges[0].push({
       type: "info",
@@ -162,6 +187,9 @@ export default class Game {
 
   setTile(x, y, element) {
     this.board.set(x, y, element);
+
+    let turn = this.history.board[this.currentTurn];
+    if (!turn) this.history.board[this.currentTurn] = [];
 
     this.history.board[this.currentTurn].push({
       x: x,
