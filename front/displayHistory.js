@@ -25,7 +25,7 @@ function renderBoard(x) {
   for (const action of actions) {
     screen.setLed(action.x, action.y, new Color(action.r, action.g, action.b));
   }
-  console.log(fetchData);
+  // console.log(fetchData);
 }
 
 function play() {
@@ -82,8 +82,9 @@ function calculateScores() {
       scores[player].push(roundScore);
     }
   }
-  console.log(scores);
+  // console.log(scores);
 }
+
 function displayScore() {
   let labelsName = [];
   let chartColors = [];
@@ -97,12 +98,12 @@ function displayScore() {
   let scoresChart1 = [];
   scoresChart1.push(scores[labelsName[0]][scores[labelsName[0]].length - 1]);
   scoresChart1.push(scores[labelsName[1]][scores[labelsName[0]].length - 1]);
-  for (const [player, value] of Object.entries(fetchData.playersColor)) {
-    //   console.log(player, value);
-    //   chartColors.push(value);
-  }
-  console.log();
   console.log(scores);
+  for (const [player, value] of Object.entries(fetchData.playersColor)) {
+    chartColors.push(value);
+  }
+  // console.log();
+  // console.log(scores);
   const ctx = document.getElementById("myChart");
 
   console.log(scoresChart1);
@@ -128,62 +129,54 @@ function displayScore() {
       },
     },
   });
+  const ctx2 = document.getElementById("myChart2");
+
+  let datasets = [];
+  for (const [player, value] of Object.entries(fetchData.stats)) {
+    console.log(scores[player]);
+    datasets.push({
+      label: player, // Label for the dataset, e.g., player name
+      data: [...scores[player]], // Array of data points for the dataset
+
+      backgroundColor: fetchData.playersColor[player],
+    });
+  }
+  console.log(datasets);
+
+  let labelsChart2 = [];
+  for (let i = 0; i < document.getElementById("turn").value; i++) {
+    labelsChart2.push(i);
+  }
+  const data = {
+    labels: labelsChart2, // Assuming labelsName is an array of labels
+    datasets: [...datasets],
+  };
+
+  const config = {
+    type: "line",
+    data: data,
+    options: {
+      responsive: true,
+      interaction: {
+        mode: "index",
+        intersect: false,
+      },
+      stacked: false,
+      plugins: {
+        title: {
+          display: true,
+          text: "Chart.js Line Chart - Multi Axis",
+        },
+      },
+      scales: {
+        y: {
+          type: "linear",
+          display: true,
+          position: "left",
+        },
+      },
+    },
+  };
+
+  new Chart(ctx2, config);
 }
-// const ctx2 = document.getElementById("myChart2");
-// const DATA_COUNT = this.history.length;
-// const NUMBER_CFG = {
-//     count: DATA_COUNT,
-//     min: 0,
-//     max: this.board.width * this.board.height,
-// };
-
-// // console.log(this.scorePlayer1History);
-// // console.log(this.scorePlayer2History);
-// const labels = Array.from(
-//     { length: this.scorePlayersHistory[0].length + 1 },
-//     (_, index) => index
-// );
-// // console.log(labels);
-// let sampleDataset = [];
-// for (let i = 0; i < this.players.length; i++) {
-//     console.log(this.scorePlayersHistory[i]);
-//     sampleDataset.push({
-//         label: "Player " + (i + 1),
-//         data: this.scorePlayersHistory[i],
-//         borderColor: [chartColors[i]],
-//         backgroundColor: [chartColors[i]],
-//     });
-// }
-// console.log(this.scorePlayersHistory);
-// console.log(sampleDataset);
-// const data = {
-//     labels: labels,
-//     datasets: [...sampleDataset],
-// };
-// const config = {
-//     type: "line",
-//     data: data,
-//     options: {
-//         responsive: true,
-//         interaction: {
-//             mode: "index",
-//             intersect: false,
-//         },
-//         stacked: false,
-//         plugins: {
-//             title: {
-//                 display: true,
-//                 text: "Chart.js Line Chart - Multi Axis",
-//             },
-//         },
-//         scales: {
-//             y: {
-//                 type: "linear",
-//                 display: true,
-//                 position: "left",
-//             },
-//         },
-//     },
-// };
-
-// new Chart(ctx2, config);
