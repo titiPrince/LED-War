@@ -85,6 +85,7 @@ function getGameTurnData() {
     return gameState;
 }
 
+let count = 0;
 function main() {
     let data = getGameTurnData();
 
@@ -92,8 +93,10 @@ function main() {
 
     const target = {
         x: me.id,
-        y: ((data.turn % (data.height *2)) - (data.height - 1))
+        y: Math.round(data.height/2 + Math.sin((count + me.id)/2) * 2)
     }
+
+    count++;
 
     return me.goTo(target.x, target.y);
 }
